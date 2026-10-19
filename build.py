@@ -24,6 +24,8 @@ LISTA_PVM = D["paivays"]  # esim. "25.8.2026"
 L = D["luvat"]
 YHTEYS = "miika@eduskuntaseuranta.fi"
 BUILD_PVM = date.today().isoformat()
+import hashlib
+CSS_V = hashlib.md5(open(os.path.join(ROOT, "style.css"), "rb").read()).hexdigest()[:8]  # välimuistin ohitus
 
 esc = lambda s: html.escape(s or "", quote=True)
 
@@ -135,7 +137,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/style.css?v={BUILD_PVM}">
+<link rel="stylesheet" href="/style.css?v={CSS_V}">
 {ld}
 </head>
 <body>
