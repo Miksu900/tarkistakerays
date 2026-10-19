@@ -90,6 +90,22 @@ LOGO = ('<svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="
         '<path d="m10.2 16.3 4 4 7.6-8.1" fill="none" stroke="var(--acc-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
 
+def ik(nimi, cls="ico"):
+    """Pienet viivaikonit (24x24, currentColor)."""
+    P = {
+        "check": '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+        "search": '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+        "hash": '<path d="M9 4 7 20M17 4l-2 16M4.5 9h16M3.5 15h16"/>',
+        "card": '<rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3 10h18M7 15h4"/>',
+        "list": '<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.8" cy="6.5" r="1.1"/><circle cx="4.8" cy="12" r="1.1"/><circle cx="4.8" cy="17.5" r="1.1"/>',
+        "alert": '<path d="M12 3.5 2.8 19.5h18.4z"/><path d="M12 10v4.5M12 17.2v.1"/>',
+        "pin": '<path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0 1 13 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/>',
+        "shield": '<path d="M12 2.8 4.5 5.8v5.6c0 4.8 3.2 8.6 7.5 9.8 4.3-1.2 7.5-5 7.5-9.8V5.8z"/><path d="m8.6 12.2 2.4 2.4 4.6-4.9"/>',
+    }[nimi]
+    return (f'<svg class="{cls}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{P}</svg>')
+
+
 def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skripti="", noindex=False):
     canonical = h_canonical or f"{SITE}{polku}"
     ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>' if jsonld else ""
@@ -152,19 +168,20 @@ def kirjoita(polku, sisalto):
 
 def kortti(o, h="h3"):
     kp = f' · {esc(o["kotipaikka"])}' if o["kotipaikka"] else ""
-    return (f'<a class="item" href="/j/{o["slug"]}/"><{h} class="name">{esc(o["yhteiso"])}</{h}>'
-            f'<span class="meta">{esc(o["nro"])} · voimassa {esc(o["alku"])} alkaen{kp}</span></a>')
+    return (f'<a class="item" href="/j/{o["slug"]}/"><span class="ok-badge" title="Lupa voimassa">{ik("check")}</span>'
+            f'<span class="item-txt"><{h} class="name">{esc(o["yhteiso"])}</{h}>'
+            f'<span class="meta">{esc(o["nro"])} · voimassa {esc(o["alku"])} alkaen{kp}</span></span></a>')
 
 
 OHJEET = """<section class="guide" aria-labelledby="ohje-h">
 <h2 id="ohje-h">Näin tunnistat laillisen keräyksen</h2>
 <ol class="steps">
-<li><b>Kysy keräysnumero.</b> Laillisen keräyksen järjestäjän on kerrottava itsestään, keräyksen käyttötarkoitus ja lupa- tai pienkeräysnumero. Jos numeroa ei anneta, älä lahjoita.</li>
-<li><b>Tarkista tilinumero.</b> Huijari voi käyttää oikean järjestön nimeä mutta omaa tilinumeroaan. Hae tilinumerolla ja varmista, että se kuuluu juuri tälle järjestölle.</li>
-<li><b>Pienkeräykset ovat eri listalla.</b> Pienkeräys (enintään 10 000 €, enintään 3 kuukautta) ilmoitetaan poliisilaitokselle, eikä se näy täällä. Pyydä pienkeräysnumero ja tarvittaessa tarkista se poliisilta.</li>
-<li><b>Epäiletkö huijausta?</b> Ilmoita poliisille. Luvaton rahankeräys on rikos, samoin keräysvarojen käyttäminen muuhun kuin ilmoitettuun tarkoitukseen.</li>
+<li>{I1}<div><b>Kysy keräysnumero.</b> Laillisen keräyksen järjestäjän on kerrottava itsestään, keräyksen käyttötarkoitus ja lupa- tai pienkeräysnumero. Jos numeroa ei anneta, älä lahjoita.</div></li>
+<li>{I2}<div><b>Tarkista tilinumero.</b> Huijari voi käyttää oikean järjestön nimeä mutta omaa tilinumeroaan. Hae tilinumerolla ja varmista, että se kuuluu juuri tälle järjestölle.</div></li>
+<li>{I3}<div><b>Pienkeräykset ovat eri listalla.</b> Pienkeräys (enintään 10 000 €, enintään 3 kuukautta) ilmoitetaan poliisilaitokselle, eikä se näy täällä. Pyydä pienkeräysnumero ja tarvittaessa tarkista se poliisilta.</div></li>
+<li>{I4}<div><b>Epäiletkö huijausta?</b> Ilmoita poliisille. Luvaton rahankeräys on rikos, samoin keräysvarojen käyttäminen muuhun kuin ilmoitettuun tarkoitukseen.</div></li>
 </ol>
-</section>"""
+</section>""".format(I1=ik("hash", "step-ico"), I2=ik("card", "step-ico"), I3=ik("list", "step-ico"), I4=ik("alert", "step-ico warn"))
 
 COPYJS = ('<script>document.addEventListener("click",function(e){var b=e.target.closest(".copy");if(!b)return;'
           'var t=b.getAttribute("data-copy");function ok(){b.textContent="Kopioitu";setTimeout(function(){b.textContent="Kopioi"},1600)}'
@@ -184,8 +201,9 @@ for o in L:
     rivit.append(f'<div class="fact"><dt>Keräysnumero</dt><dd class="mono">{esc(o["nro"])}</dd></div>')
     rivit.append(f'<div class="fact"><dt>Voimassa</dt><dd>{esc(o["alku"])} alkaen</dd></div>')
     if o["iban"]:
-        rivit.append(f'<div class="fact wide"><dt>Keräystili</dt><dd class="mono iban"><span id="iban">{esc(iban_fmt(o["iban"]))}</span>'
-                     f'<button type="button" class="copy" data-copy="{esc(o["iban"])}">Kopioi</button></dd></div>')
+        rivit.append(f'<div class="fact wide tili"><dt>{ik("card", "dt-ico")}Oikea keräystili</dt><dd class="mono iban"><span id="iban">{esc(iban_fmt(o["iban"]))}</span>'
+                     f'<button type="button" class="copy" data-copy="{esc(o["iban"])}">Kopioi</button></dd>'
+                     '<p class="tili-ohje">Lahjoita vain tälle tilille. Jos sinulle annettiin eri tilinumero, älä maksa.</p></div>')
     else:
         rivit.append('<div class="fact wide"><dt>Keräystili</dt><dd>Ei ilmoitettu poliisin listassa. Varmista tilinumero järjestöltä.</dd></div>')
     if re.fullmatch(r"\d{7}-\d", o["ytunnus"]):
@@ -203,7 +221,7 @@ for o in L:
     runko = f"""{nav}
 <article class="org">
 <h1>{esc(nimi)}</h1>
-<div class="status ok"><span class="dot" aria-hidden="true"></span><div><b>Rahankeräyslupa voimassa</b><span>Poliisihallituksen listalla {esc(LISTA_PVM)}. Lupa on voimassa toistaiseksi, ellei poliisi peruuta sitä.</span></div></div>
+<div class="status ok big">{ik("shield", "status-ico")}<div><b>Rahankeräyslupa voimassa</b><span>Poliisihallituksen listalla {esc(LISTA_PVM)}. Lupa on voimassa toistaiseksi, ellei poliisi peruuta sitä.</span></div></div>
 <dl class="facts">{''.join(rivit)}</dl>
 <section class="purpose"><h2>Mihin keräysvarat käytetään</h2>{kaytto_html(o["kayttotarkoitus"]) or "<p>Käyttötarkoitusta ei ole ilmoitettu listassa.</p>"}
 <p class="mute">Teksti on Poliisihallituksen listasta sellaisenaan.</p></section>
@@ -225,9 +243,16 @@ for kp, lst in kunnat.items():
     kirjoita(f"/kunta/{ks}/", sivu(f"/kunta/{ks}/", otsikko, kuvaus, runko))
 
 ks_sorted = sorted(kunnat.items(), key=lambda kv: kv[0].lower())
+MAXK = max(len(v) for v in kunnat.values())
+
+
+def kaupunki(k, v, palkki=True):
+    w = max(2, round(100 * len(v) / MAXK))
+    return (f'<li><a href="/kunta/{slug(k)}/"><span class="c-row"><span class="c-name">{esc(k)}</span>'
+            f'<span class="c-n">{len(v)}</span></span>' + (f'<span class="bar" aria-hidden="true"><i style="width:{w}%"></i></span>' if palkki else '') + '</a></li>')
 runko = ('<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a></nav><h1>Rahankeräykset paikkakunnittain</h1>'
          '<p class="lead">Järjestön kotipaikan mukaan. Keräys voi silti tapahtua missä päin Suomea tahansa.</p><ul class="cities">' +
-         "".join(f'<li><a href="/kunta/{slug(k)}/">{esc(k)}</a> <span class="mute">{len(v)}</span></li>' for k, v in ks_sorted) + "</ul>")
+         "".join(kaupunki(k, v, False) for k, v in ks_sorted) + "</ul>")
 kirjoita("/kunnat/", sivu("/kunnat/", "Rahankeräykset paikkakunnittain | Keräysvahti",
                           "Voimassa olevat rahankeräysluvat järjestön kotipaikkakunnan mukaan.", runko))
 
@@ -238,20 +263,23 @@ json.dump({"paivays": LISTA_PVM, "l": indeksi}, open(os.path.join(ROOT, "haku.js
 # ---- etusivu ----
 top_kunnat = sorted(kunnat.items(), key=lambda kv: -len(kv[1]))[:12]
 runko = f"""<section class="hero">
+<div class="hero-mark" aria-hidden="true">{LOGO.replace('class="logo-mark"', 'class="hero-logo"')}</div>
 <p class="eyebrow">Ennen kuin lahjoitat</p>
 <h1>Onko keräyksellä lupa?</h1>
 <p class="lead">Hae järjestön nimellä, keräysnumerolla, Y-tunnuksella tai tilinumerolla. Mukana kaikki {len(L):,} Poliisihallituksen myöntämää voimassa olevaa rahankeräyslupaa.</p>
 <form class="search" role="search" onsubmit="return false">
 <label for="q" class="sr">Hae rahankeräystä</label>
+{ik("search", "search-ico")}
 <input id="q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="search" placeholder="Järjestö, RA/2025/918 tai FI12 3456 …">
 </form>
+<dl class="stats"><div><dt>Lupaa voimassa</dt><dd>{len(L):,}</dd></div><div><dt>Paikkakuntaa</dt><dd>{len(kunnat)}</dd></div><div><dt>Poliisin lista</dt><dd>{esc(LISTA_PVM)}</dd></div></dl>
 <div class="ex" aria-label="Esimerkkihaut"><button type="button" data-q="Punainen Risti">Punainen Risti</button><button type="button" data-q="Lions Club">Lions Club</button><button type="button" data-q="Oulu">Oulu</button><button type="button" data-q="Pelastakaa Lapset">Pelastakaa Lapset</button></div>
 </section>
 <p class="count" id="count" aria-live="polite">Ladataan lupatietoja…</p>
 <div class="list" id="tulos"></div>
 <noscript><p>Haku vaatii JavaScriptin. Voit selata lupia <a href="/kunnat/">paikkakunnittain</a>.</p></noscript>
 {OHJEET}
-<section><h2>Selaa paikkakunnittain</h2><ul class="cities">{''.join(f'<li><a href="/kunta/{slug(k)}/">{esc(k)}</a> <span class="mute">{len(v)}</span></li>' for k, v in top_kunnat)}</ul>
+<section><h2>Selaa paikkakunnittain</h2><ul class="cities">{''.join(kaupunki(k, v) for k, v in top_kunnat)}</ul>
 <p><a href="/kunnat/">Kaikki paikkakunnat →</a></p></section>
 <section><h2>Uusimmat luvat</h2><div class="list">{''.join(kortti(o) for o in uusimmat[:8])}</div></section>""".replace(f"{len(L):,}", f"{len(L):,}".replace(",", "\u00a0"))
 HAKUJS = """<script>
@@ -260,9 +288,11 @@ var q=document.getElementById("q"),out=document.getElementById("tulos"),cnt=docu
 function fold(s){return(s||"").toLowerCase().normalize("NFKD").replace(/[\\u0300-\\u036f]/g,"").replace(/\\s+/g," ").trim()}
 function ibanF(s){return s?s.replace(/(.{4})/g,"$1 ").trim():""}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
-function card(o){var a=el("a","item");a.href="/j/"+o[5]+"/";a.appendChild(el("h3","name",o[1]));
- var m=o[0]+" · voimassa "+o[6]+" alkaen"+(o[2]?" · "+o[2]:"");a.appendChild(el("span","meta",m));
- if(o[4]){var i=el("span","meta mono","Tili "+ibanF(o[4]));a.appendChild(i)}return a}
+var OK=CHECK;
+function card(o){var a=el("a","item");a.href="/j/"+o[5]+"/";var b=el("span","ok-badge");b.title="Lupa voimassa";b.innerHTML=OK;a.appendChild(b);
+ var x=el("span","item-txt");x.appendChild(el("h3","name",o[1]));
+ var m=o[0]+" · voimassa "+o[6]+" alkaen"+(o[2]?" · "+o[2]:"");x.appendChild(el("span","meta",m));
+ if(o[4]){x.appendChild(el("span","meta mono","Tili "+ibanF(o[4])))}a.appendChild(x);return a}
 function more(){var b=document.getElementById("more");if(b)b.remove();hits.slice(shown,shown+20).forEach(function(o){out.appendChild(card(o))});shown+=20;
  if(shown<hits.length){var x=el("button","more","Näytä lisää ("+(hits.length-shown)+")");x.id="more";x.type="button";x.onclick=more;out.appendChild(x)}}
 function run(){var raw=q.value.trim(),f=fold(raw),ib=raw.toUpperCase().replace(/\\s+/g,"");out.innerHTML="";shown=0;
@@ -282,6 +312,7 @@ fetch("/haku.json").then(function(r){return r.json()}).then(function(d){L=d.l;L.
 </script>"""
 jsonld = {"@context": "https://schema.org", "@type": "WebSite", "name": "Keräysvahti", "url": SITE + "/",
           "description": "Tarkista, onko rahankeräyksellä poliisin lupa."}
+HAKUJS = HAKUJS.replace("var OK=CHECK;", "var OK=" + json.dumps(ik("check")) + ";")
 kirjoita("/", sivu("/", "Keräysvahti – tarkista rahankeräys ennen kuin lahjoitat",
                    "Onko keräyksellä poliisin lupa? Hae kaikki voimassa olevat rahankeräysluvat järjestön nimellä, keräysnumerolla, Y-tunnuksella tai tilinumerolla.",
                    runko, jsonld=jsonld, skripti=HAKUJS))

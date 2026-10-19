@@ -32,29 +32,40 @@ with pdfplumber.open("lista.pdf") as pdf:
             if cur is None: continue
             for kk, v, g in zip(KEY, c, gaps):
                 if v: cur[kk].append((v, g))
-ERILLISET = set("ry rf sr r.y. ry. rf. r.f. s.r. ja tai sekä och i av för på till med the of and for in e.v. ry., ab oy ei on ovat sen eri".split())
+ERILLISET = set("ry rf sr r.y r.f s.r r.p ry rp ja tai sekä och i av för på till med the of and for in e.v ab oy ei on de me åt mlk lk".split())
+SANASTO = None  # käyttötarkoitusteksteistä kerätyt oikeat sanat (ks. alla)
+def _sana(t):
+    return re.sub(r"[^\wåäö-]", "", t.lower())
 def join(parts, tiukka=False):
-    """Yhdistää solun rivit. PDF katkaisee kapeassa sarakkeessa pitkät sanat kesken (esim. 'Lastensuojelujärjest' + 'öt'):
-    silloin rivit liitetään ilman välilyöntiä."""
-    s, prev_gap = "", 99
+    """Yhdistää solun rivit. Kapea sarake katkaisee PDF:ssä sarakkeen levyistä pidemmät sanat kesken
+    ('Lastensuojelujärjest' + 'öt'). Tunnusmerkit: edellisellä rivillä on vain yksi sana, se täyttää sarakkeen
+    lähes kokonaan, ja seuraava rivi alkaa pienellä kirjaimella eikä ala tunnetulla kokonaisella sanalla."""
+    s, ed_rivi, ed_gap = "", "", 99
     for item in parts:
         p, g = item if isinstance(item, tuple) else (item, 99)
-        eka = p.split(" ")[0]; edellinen = s.split(" ")[-1] if s else ""
-        katkennut = (s and eka[:1].islower() and eka.strip(".,") not in ERILLISET and edellinen[-1:].isalpha() and
-                     ((not tiukka and len(eka) <= 4) or prev_gap < (2.5 if tiukka else 4)))
-        if s.endswith("-") and not s.endswith(" -") and p[:1].islower(): s = s + p
-        elif katkennut: s = s + p
-        else: s = s + " " + p if s else p
-        prev_gap = g
+        eka = p.split(" ")[0]; e = _sana(eka)
+        if s.endswith("-") and not s.endswith(" -") and p[:1].islower():
+            s = s + p
+        elif (not tiukka and s and " " not in ed_rivi and ed_gap < 9 and eka[:1].islower() and ed_rivi[-1:].isalpha()
+              and e not in ERILLISET and not (len(e) >= 4 and SANASTO and e in SANASTO)
+              and not (ed_rivi.endswith("n") and len(e) >= 6)):
+            s = s + p
+        else:
+            s = s + " " + p if s else p
+        ed_rivi, ed_gap = p, g
     return re.sub(r"\s+", " ", s).strip()
+from collections import Counter as _C
+_c = _C(_sana(w) for r in recs for t in r["kayttotarkoitus"] for w in t[0].split())
+SANASTO = {w for w, n in _c.items() if len(w) >= 3 and n >= 2}
+SIVUNRO = re.compile(r"(\s*\b\d+\s*/\s*\d+)+\s*$")
 out = []
 for r in recs:
     pank = " ".join(x[0] for x in r["pankki"]); ib = re.search(r"FI\d{2}\s?(?:\d\s?){14}", pank)
     v = join(r["voimassa"]); d = re.findall(r"\d\d\.\d\d\.\d{4}", v)
     out.append({"nro": join(r["nro"]), "alku": d[0] if d else "", "loppu": d[1] if len(d) > 1 else "",
                 "kayttotarkoitus": join(r["kayttotarkoitus"], tiukka=True), "viranomainen": join(r["viranomainen"]).replace("Poliisihallitu s", "Poliisihallitus"),
-                "iban": ib.group(0).replace(" ", "") if ib else "", "ytunnus": join(r["ytunnus"]).replace(" ", ""),
-                "yhteiso": join(r["yhteiso"]), "kotipaikka": join(r["kotipaikka"])})
+                "iban": ib.group(0).replace(" ", "") if ib else "", "ytunnus": (re.search(r"\d{7}-\d", join(r["ytunnus"]).replace(" ", "")) or re.search(r".*", join(r["ytunnus"]).replace(" ", ""))).group(0),
+                "yhteiso": SIVUNRO.sub("", join(r["yhteiso"])), "kotipaikka": SIVUNRO.sub("", join(r["kotipaikka"]))})
 print(len(out), "lupaa;", len({o["nro"] for o in out}), "uniikkia")
 print(Counter(o["viranomainen"] for o in out).most_common(4))
 print("ilman ibania", sum(not o["iban"] for o in out), "ilman ytunnusta", sum(not re.fullmatch(r"\d{7}-\d", o["ytunnus"]) for o in out), "loppupv", sum(bool(o["loppu"]) for o in out))
