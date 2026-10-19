@@ -71,6 +71,8 @@ p{margin:0}
 .item .name{font:700 1.04rem/1.3 var(--f-body);letter-spacing:0;color:var(--ink)}
 .item .meta{font-size:.86rem;color:var(--mute);overflow-wrap:anywhere}
 .more{align-self:flex-start;font:600 .95rem var(--f-body);background:var(--acc);color:var(--acc-ink);border:0;border-radius:10px;padding:10px 16px;cursor:pointer}
+.asenna-laatikko{margin-top:14px;display:flex;flex-direction:column;gap:6px}.asenna-laatikko[hidden],.asenna-laatikko [hidden]{display:none}
+.asenna-laatikko .btn{border:0;cursor:pointer;font:700 1rem var(--f-body);align-self:flex-start}
 .btn{display:inline-block;font-weight:700;background:var(--acc);color:var(--acc-ink);text-decoration:none;border-radius:10px;padding:11px 16px}
 
 /* tila */

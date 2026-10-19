@@ -134,6 +134,9 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Keräysvahti">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -155,9 +158,21 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <p class="mute">Saman ylläpitäjän palveluja: <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a> · <a href="https://suomitanaan.fi">Suomi Tänään</a></p>
 </div></footer>
 {skripti}
+{ASENNUSJS}
 </body>
 </html>
 """
+
+
+ASENNUS = ('<div class="asenna-laatikko" id="asenna-l" hidden><button type="button" class="btn" id="asenna">Asenna sovellukseksi puhelimeen</button>'
+           '<p class="small mute" id="asenna-ios" hidden>📱 Sovellukseksi iPhoneen: paina Safarin <b>Jaa</b>-painiketta ja valitse <b>Lisää Koti-valikkoon</b>.</p></div>')
+ASENNUSJS = ('<script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});'
+             'var L=document.getElementById("asenna-l");if(!L)return;'
+             'if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;'
+             'var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;'
+             'window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});'
+             'A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};'
+             'if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>')
 
 
 def kirjoita(polku, sisalto):
@@ -276,6 +291,7 @@ runko = f"""<section class="hero">
 </form>
 <dl class="stats"><div><dt>Lupaa voimassa</dt><dd>{len(L):,}</dd></div><div><dt>Paikkakuntaa</dt><dd>{len(kunnat)}</dd></div><div><dt>Poliisin lista</dt><dd>{esc(LISTA_PVM)}</dd></div></dl>
 <div class="ex" aria-label="Esimerkkihaut"><button type="button" data-q="Punainen Risti">Punainen Risti</button><button type="button" data-q="Lions Club">Lions Club</button><button type="button" data-q="Oulu">Oulu</button><button type="button" data-q="Pelastakaa Lapset">Pelastakaa Lapset</button></div>
+{ASENNUS}
 </section>
 <p class="count" id="count" aria-live="polite">Ladataan lupatietoja…</p>
 <div class="list" id="tulos"></div>
@@ -350,5 +366,11 @@ sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitem
 sm += [f"<url><loc>{SITE}{u}</loc><lastmod>{BUILD_PVM}</lastmod></url>" for u in urls]
 sm.append("</urlset>")
 open(os.path.join(ROOT, "sitemap.xml"), "w").write("\n".join(sm) + "\n")
+json.dump({"name": "Keräysvahti – tarkista rahankeräys", "short_name": "Keräysvahti", "lang": "fi",
+           "description": "Tarkista, onko rahankeräyksellä poliisin lupa ja kuuluuko tilinumero järjestölle.",
+           "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#f4f6f3", "theme_color": "#1e6b4f",
+           "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png"}, {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png"},
+                     {"src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]},
+          open(os.path.join(ROOT, "manifest.webmanifest"), "w"), ensure_ascii=False, indent=1)
 open(os.path.join(ROOT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
 print(f"Valmis: {len(L)} järjestösivua, {len(kunnat)} paikkakuntaa, {len(urls)} osoitetta sivukartassa.")
