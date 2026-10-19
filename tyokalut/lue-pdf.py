@@ -10,6 +10,7 @@ with pdfplumber.open("lista.pdf") as pdf:
         if len(hdr) < 8: continue
         htop = max(hdr[c]["bottom"] for c in COLS)
         xs = [hdr[c]["x0"] - 2 for c in COLS]
+        xe = xs[1:] + [page.width - 15]
         # rivit
         rows = {}
         for w in words:
@@ -20,27 +21,38 @@ with pdfplumber.open("lista.pdf") as pdf:
         for k in sorted(rows):
             ws = sorted(rows[k], key=lambda w: w["x0"])
             if ws[-1]["top"] > page.height - 30 and len(ws) <= 3: continue  # sivunumero
-            cells = [[] for _ in COLS]
+            cells = [[] for _ in COLS]; ends = [0] * len(COLS)
             for w in ws:
                 i = max(j for j in range(len(xs)) if w["x0"] >= xs[j] - 1) if w["x0"] >= xs[0] - 1 else 0
-                cells[i].append(w["text"])
+                cells[i].append(w["text"]); ends[i] = max(ends[i], w["x1"])
             c = [" ".join(x) for x in cells]
+            gaps = [xe[j] - ends[j] for j in range(len(COLS))]
             if re.fullmatch(r"RA/\d{4}/\d+", c[0]):
                 cur = {kk: [] for kk in KEY}; recs.append(cur)
             if cur is None: continue
-            for kk, v in zip(KEY, c):
-                if v: cur[kk].append(v)
-def join(parts):
-    s = ""
-    for p in parts:
-        s = s + p if (s.endswith("-") and not s.endswith(" -") and p[:1].islower()) else (s + " " + p if s else p)
+            for kk, v, g in zip(KEY, c, gaps):
+                if v: cur[kk].append((v, g))
+ERILLISET = set("ry rf sr r.y. ry. rf. r.f. s.r. ja tai sekä och i av för på till med the of and for in e.v. ry., ab oy ei on ovat sen eri".split())
+def join(parts, tiukka=False):
+    """Yhdistää solun rivit. PDF katkaisee kapeassa sarakkeessa pitkät sanat kesken (esim. 'Lastensuojelujärjest' + 'öt'):
+    silloin rivit liitetään ilman välilyöntiä."""
+    s, prev_gap = "", 99
+    for item in parts:
+        p, g = item if isinstance(item, tuple) else (item, 99)
+        eka = p.split(" ")[0]; edellinen = s.split(" ")[-1] if s else ""
+        katkennut = (s and eka[:1].islower() and eka.strip(".,") not in ERILLISET and edellinen[-1:].isalpha() and
+                     ((not tiukka and len(eka) <= 4) or prev_gap < (2.5 if tiukka else 4)))
+        if s.endswith("-") and not s.endswith(" -") and p[:1].islower(): s = s + p
+        elif katkennut: s = s + p
+        else: s = s + " " + p if s else p
+        prev_gap = g
     return re.sub(r"\s+", " ", s).strip()
 out = []
 for r in recs:
-    pank = " ".join(r["pankki"]); ib = re.search(r"FI\d{2}\s?(?:\d\s?){14}", pank)
+    pank = " ".join(x[0] for x in r["pankki"]); ib = re.search(r"FI\d{2}\s?(?:\d\s?){14}", pank)
     v = join(r["voimassa"]); d = re.findall(r"\d\d\.\d\d\.\d{4}", v)
     out.append({"nro": join(r["nro"]), "alku": d[0] if d else "", "loppu": d[1] if len(d) > 1 else "",
-                "kayttotarkoitus": join(r["kayttotarkoitus"]), "viranomainen": join(r["viranomainen"]).replace("Poliisihallitu s", "Poliisihallitus"),
+                "kayttotarkoitus": join(r["kayttotarkoitus"], tiukka=True), "viranomainen": join(r["viranomainen"]).replace("Poliisihallitu s", "Poliisihallitus"),
                 "iban": ib.group(0).replace(" ", "") if ib else "", "ytunnus": join(r["ytunnus"]).replace(" ", ""),
                 "yhteiso": join(r["yhteiso"]), "kotipaikka": join(r["kotipaikka"])})
 print(len(out), "lupaa;", len({o["nro"] for o in out}), "uniikkia")
