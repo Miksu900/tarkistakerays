@@ -4,7 +4,7 @@ import json
 from huijaukset_data import TYYPIT, VISA, KAUSI, LAHTEET
 
 # False = luonnos (noindex, ei valikossa eikä sivukartassa). True = julkinen.
-JULKINEN = False
+JULKINEN = True
 
 SULKU = '<a class="soita" href="tel:+35820333"><b>020 333</b><span>Sulkupalvelu: kortit ja verkkopankki kiinni, 24 h</span></a>'
 HATA = '<a class="soita hata" href="tel:112"><b>112</b><span>Hätänumero, kun vaara on päällä</span></a>'

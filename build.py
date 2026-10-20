@@ -147,7 +147,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <a class="skip" href="#sisalto">Siirry sisältöön</a>
 <header class="hd"><div class="hd-in">
 <a class="brand" href="/">{LOGO}<span>Keräysvahti</span></a>
-<nav aria-label="Päävalikko"><a href="/">Haku</a><a href="/kunnat/">Paikkakunnat</a><a href="/tietoa/">Tietoa</a></nav>
+<nav aria-label="Päävalikko"><a href="/">Haku</a><a href="/huijaukset/">Huijaukset</a><a href="/kunnat/">Paikkakunnat</a><a href="/tietoa/">Tietoa</a></nav>
 </div></header>
 <main id="sisalto" class="wrap">
 {runko}
