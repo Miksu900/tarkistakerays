@@ -108,12 +108,12 @@ def ik(nimi, cls="ico"):
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{P}</svg>')
 
 
-def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skripti="", noindex=False):
+def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skripti="", noindex=False, lang="fi"):
     canonical = h_canonical or f"{SITE}{polku}"
-    ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>' if jsonld else ""
+    ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False).replace("</", "<\\/")}</script>' if jsonld else ""
     robots = '<meta name="robots" content="noindex">' if noindex else ""
     return f"""<!doctype html>
-<html lang="fi">
+<html lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -125,7 +125,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <meta property="og:description" content="{esc(kuvaus)}">
 <meta property="og:url" content="{esc(canonical)}">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fi_FI">
+<meta property="og:locale" content="{ {"fi":"fi_FI","sv":"sv_FI","en":"en_GB"}[lang] }">
 <meta property="og:image" content="{SITE}/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -357,74 +357,16 @@ kirjoita("/tietoa/", sivu("/tietoa/", "Tietoa ja tietosuoja | Keräysvahti",
                           "Mistä Keräysvahdin tiedot ovat peräisin, kuka palvelua ylläpitää ja miten tietosuoja on hoidettu.", runko))
 
 
-# ---- huijaukset (luonnos: noindex, ei vielä valikossa) ----
-HUIJ = [
- ("Valekerääjä ovella, kaupassa tai parkkihallissa",
-  "Kerääjällä on lista tai lipas, usein vammaisjärjestön tai sairaiden lasten nimissä. Kohteena ovat usein iäkkäät. Joskus huijari vie seteleitä lompakosta, kun etsit käteistä.",
-  ["Tarkista keräys <a href=\"/\">Keräysvahdista</a> järjestön nimellä ja maksa vain luvassa näkyvälle tilille.",
-   "Laillinen kerääjä kertoo luvan tai pienkeräyksen numeron. Jos numeroa ei ole, älä anna rahaa.",
-   "Älä avaa lompakkoa vieraan edessä.",
-   "Poliisin ohje: jos epäilet keräystä paikan päällä, soita 112."]),
- ("Valepoliisi tai valepankkivirkailija soittaa",
-  "Soittaja kertoo tililläsi olevan väärinkäytöksiä ja pyytää pankkitunnuksia, korttitietoja tai siirtämään rahat \"turvatilille\". Numero voi näyttää oikealta.",
-  ["Poliisi, viranomainen tai pankki ei koskaan kysy pankkitunnuksia puhelimessa.",
-   "Lopeta puhelu ja soita itse pankin tai viranomaisen viralliseen numeroon.",
-   "Turvatiliä ei ole olemassa: älä siirrä rahaa kenenkään ohjeesta."]),
- ("Huijausviesti: paketti, pankki, vero tai viranomainen",
-  "Tekstiviesti tai sähköposti, jossa on kiire ja linkki: paketti odottaa, veronpalautus peruttu, tili suljetaan. Lähettäjän nimessä voi olla pieni virhe.",
-  ["Älä avaa linkkiä. Mene palveluun itse kirjoittamalla osoite tai virallisella sovelluksella.",
-   "Pankit eivät pyydä päivittämään tietoja tekstiviestillä tai sähköpostilla.",
-   "Jos jo kirjauduit linkin kautta, soita heti pankkiin."]),
- ("Sijoitus- ja kryptohuijaus",
-  "Mainos tai some-viesti lupaa nopeat ja suuret tuotot, usein tunnetun henkilön kuvalla tai valeuutisella. \"Neuvoja\" ohjaa siirtämään rahaa tilille tai sovellukseen, jota hän hallitsee.",
-  ["Tarkista yritys <a href=\"https://www.finanssivalvonta.fi/rekisterit/varoituslistat/\" rel=\"noopener\">Finanssivalvonnan varoituslistalta</a> ja toimilupa Finanssivalvonnan sivuilta.",
-   "Epärealistinen tuottolupaus on varoitusmerkki.",
-   "Älä koskaan siirrä rahaa luvattoman palveluntarjoajan tilille, äläkä asenna etäkäyttöohjelmaa \"neuvojan\" pyynnöstä."]),
- ("Romanssihuijaus",
-  "Netissä tavattu ihminen osoittaa nopeasti rakkautta, mutta ei koskaan pääse tapaamaan. Pian tulee hätä: raha, lahjakortit tai kryptovaluutta.",
-  ["Älä lähetä rahaa, lahjakortteja tai kryptoa ihmiselle, jota et ole tavannut.",
-   "Jos olet jo maksanut, lopeta heti, ilmoita pankkiin ja tee rikosilmoitus.",
-   "Kerro läheiselle. Huijari pyytää usein pitämään suhteen salassa."]),
- ("Nettikauppa- ja kirpputorihuijaus",
-  "Liian halpa tarjous ja kiire. Myyjä haluaa ennakkomaksun, tai \"ostaja\" lähettää linkin, jonka kautta muka saat rahat.",
-  ["Liian hyvä tarjous on huijaus. Älä osta kiireellä.",
-   "Käytetyn tavaran kaupassa tapaa ja maksa vasta nähtyäsi tavaran.",
-   "Älä koskaan kirjaudu pankkiin ostajan lähettämän linkin kautta: rahan vastaanottaminen ei vaadi pankkitunnuksia."]),
- ("Tekoälyllä tehty ääni tai video",
-  "Puhelu kuulostaa lapseltasi tai esimieheltäsi, ja rahaa tarvitaan heti. Video voi esittää tunnettua henkilöä.",
-  ["Sovi läheisten kanssa tunnussana.",
-   "Lopeta puhelu ja soita takaisin numeroon, jonka tiedät oikeaksi.",
-   "Kiire on aina varoitusmerkki."]),
- ("IT-tukihuijaus",
-  "\"Microsoftin tuki\" soittaa ja kertoo koneessa olevan viruksen, ja pyytää asentamaan etäkäyttöohjelman.",
-  ["Oikea IT-tuki ei soita yllättäen.",
-   "Älä asenna ohjelmia soittajan pyynnöstä. Jos jo asensit, sammuta kone verkosta ja soita pankkiin."]),
-]
-kortit = "".join(
-    f'<section class="huij"><h2>{esc(o)}</h2><p>{esc(t)}</p><h3>Toimi näin</h3><ul>' + "".join(f"<li>{x}</li>" for x in ohj) + "</ul></section>"
-    for o, t, ohj in HUIJ)
-runko = f"""<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a></nav>
-<h1>Tunnista huijaus</h1>
-<p class="lead">Huijari kiirehtii, vetoaa tunteisiin ja pyytää rahaa tai tunnuksia. Tältä sivulta näet yleisimmät huijaukset Suomessa ja mitä tehdä, kun epäilet. Ohjeet perustuvat poliisin, Finanssivalvonnan ja Kuluttajaliiton neuvoihin.</p>
-<div class="huij-kolme"><div><b>1.</b> Pysähdy. Kiire on huijarin työkalu.</div><div><b>2.</b> Älä anna tunnuksia, kortin tietoja tai henkilötunnusta.</div><div><b>3.</b> Tarkista itse virallisesta lähteestä.</div></div>
-{kortit}
-<section class="huij huij-apu"><h2>Jos huijaus jo tapahtui</h2><ol>
-<li><b>Soita heti pankkiin</b> ja sulje kortit ja verkkopankki. Mitä nopeammin, sitä paremmat mahdollisuudet saada rahat takaisin.</li>
-<li><b>Tee rikosilmoitus</b> poliisille: <a href="https://poliisi.fi" rel="noopener">poliisi.fi</a>. Säilytä viestit, numerot ja kuitit.</li>
-<li><b>Hae tukea:</b> Rikosuhripäivystys, puhelin 116 006, <a href="https://www.riku.fi" rel="noopener">riku.fi</a>.</li>
-<li><b>Ilmoita huijauksesta</b> <a href="https://www.kyberturvallisuuskeskus.fi" rel="noopener">Kyberturvallisuuskeskukselle</a>. Sijoitushuijauksesta voi ilmoittaa myös Finanssivalvonnalle.</li>
-<li>Kiireellisessä vaaratilanteessa soita 112.</li></ol></section>
-<p class="mute">Lähteet: Kuluttajaliitto, <i>Tunnista nettihuijaus</i> (2026); Finanssivalvonta, tiedote 15.9.2025 sijoitushuijauksista; poliisin ohjeet huijauksista ja laittomista rahankeräyksistä. Lisätietoa: <a href="https://www.huijausinfo.fi" rel="noopener">huijausinfo.fi</a>. Keräysvahti ei ole viranomaisen palvelu.</p>
-<style>.huij{{border:1px solid var(--line,#d9e2dc);border-radius:14px;padding:16px 18px;margin:14px 0;background:var(--card,#fff)}}.huij h2{{margin-top:0}}.huij h3{{font-size:1rem;margin:12px 0 4px}}.huij-kolme{{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:16px 0}}.huij-kolme div{{background:#1e6b4f;color:#fff;border-radius:12px;padding:12px 14px}}.huij-apu{{border-color:#1e6b4f}}</style>"""
-kirjoita("/huijaukset/", sivu("/huijaukset/", "Tunnista huijaus | Keräysvahti",
-    "Yleisimmät huijaukset Suomessa ja mitä tehdä: valekerääjät, valepoliisit, huijausviestit, sijoitus- ja romanssihuijaukset.", runko, noindex=True))
+# ---- huijaukset: ks. huijaukset.py ----
+import huijaukset
+HUIJ_URLS = huijaukset.rakenna(sivu, kirjoita, esc, ik)
 
 # ---- 404 ----
 kirjoita("/404.html", sivu("/404.html", "Sivua ei löytynyt | Keräysvahti", "Sivua ei löytynyt.",
     '<h1>Sivua ei löytynyt</h1><p class="lead">Lupa on voinut poistua poliisin listalta, tai osoite on kirjoitettu väärin.</p><p><a class="btn" href="/">Hae keräystä →</a></p>', noindex=True))
 
 # ---- sitemap & robots ----
-urls = ["/", "/kunnat/", "/tietoa/"] + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
+urls = ["/", "/kunnat/", "/tietoa/"] + HUIJ_URLS + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 sm += [f"<url><loc>{SITE}{u}</loc><lastmod>{BUILD_PVM}</lastmod></url>" for u in urls]
 sm.append("</urlset>")

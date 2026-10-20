@@ -19,7 +19,7 @@ RSS = [
 ]
 KOOSTE = "https://nytpuhutaan.fi/feed.json"
 AVAIN = re.compile(r"huija|huijar|kalastel|valepoliisi|valepankki|petosviest|tekstiviestihuij|bedräg|nettipetos|verkkopetos|sijoituspetos|romanssipetos|identiteettivarkau|tietojenkalastel|väärennetty (?:viesti|sivusto)|varoittaa (?:viest|soitoist|puheluist)", re.I)
-POIS = re.compile(r"\b(?:jalkapallo|jääkiekko|veikkausliiga|liiga|nhl|tuomio vanhentunut)\b", re.I)
+POIS = re.compile(r"\b(?:jalkapallo|jääkiekko|veikkausliiga|liiga|nhl|tuomio vanhentunut)\b|järjestelmä on|on (?:suuri|yksi|silkka|täysi) huijaus|huijausta veronmaksaj|poliitik|kansanedustaj|hallituks", re.I)
 PAIVAT = 21
 
 

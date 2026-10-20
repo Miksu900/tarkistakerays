@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tarkista onko viesti huijaus | Keräysvahti</title>
+<meta name="description" content="Liitä epäilyttävä tekstiviesti tai sähköposti ja näe huijausviestin varoitusmerkit. Tarkistus tehdään selaimessa, viestiä ei tallenneta.">
+<meta name="robots" content="noindex"><link rel="canonical" href="https://keraysvahti.fi/huijaukset/tarkista-viesti/">
+<meta property="og:site_name" content="Keräysvahti">
+<meta property="og:title" content="Tarkista onko viesti huijaus | Keräysvahti">
+<meta property="og:description" content="Liitä epäilyttävä tekstiviesti tai sähköposti ja näe huijausviestin varoitusmerkit. Tarkistus tehdään selaimessa, viestiä ei tallenneta.">
+<meta property="og:url" content="https://keraysvahti.fi/huijaukset/tarkista-viesti/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fi_FI">
+<meta property="og:image" content="https://keraysvahti.fi/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1e6b4f">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Keräysvahti">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/style.css?v=e0f8802f">
+
+</head>
+<body>
+<a class="skip" href="#sisalto">Siirry sisältöön</a>
+<header class="hd"><div class="hd-in">
+<a class="brand" href="/"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5 4.5 7v8.2c0 7 4.8 12.6 11.5 14.3 6.7-1.7 11.5-7.3 11.5-14.3V7z" fill="var(--acc)"/><path d="m10.2 16.3 4 4 7.6-8.1" fill="none" stroke="var(--acc-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Keräysvahti</span></a>
+<nav aria-label="Päävalikko"><a href="/">Haku</a><a href="/kunnat/">Paikkakunnat</a><a href="/tietoa/">Tietoa</a></nav>
+</div></header>
+<main id="sisalto" class="wrap">
+<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a> › <a href="/huijaukset/">Huijaukset</a></nav>
+<h1>Tarkista epäilyttävä viesti</h1>
+<p class="lead">Liitä tekstiviesti, sähköposti tai some-viesti alle. Näet, mitä huijausviestin tunnusmerkkejä siinä on.</p>
+<p class="yksityisyys"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.5 5.8v5.6c0 4.8 3.2 8.6 7.5 9.8 4.3-1.2 7.5-5 7.5-9.8V5.8z"/><path d="m8.6 12.2 2.4 2.4 4.6-4.9"/></svg> Tarkistus tehdään kokonaan omassa selaimessasi. Viestiä ei lähetetä eikä tallenneta minnekään.</p>
+<label for="viesti" class="sr">Viesti</label>
+<textarea id="viesti" rows="7" placeholder="Liitä viesti tähän…"></textarea>
+<div class="napit"><button type="button" class="btn" id="tarkista">Tarkista</button><button type="button" class="btn toissij" id="esim">Kokeile esimerkillä</button></div>
+<div id="tulos" aria-live="polite"></div>
+<aside class="note">Työkalu etsii tyypillisiä varoitusmerkkejä. Se ei voi taata, että viesti on turvallinen. Jos viesti pyytää rahaa, tunnuksia tai kiirettä, tarkista asia aina itse virallisesta lähteestä.</aside>
+<a class="apunappi" href="/huijaukset/apua/">Jouduin huijatuksi, mitä nyt? →</a>
+<p class="mute small">Lähteet: poliisin ohjeet huijauksista ja laittomista rahankeräyksistä; Finanssivalvonta (varoituslista ja tiedote 15.9.2025 sijoitushuijauksista); Kuluttajaliitto, <i>Tunnista nettihuijaus</i> (2026); Kyberturvallisuuskeskus; pankkien ohjeet huijaustilanteisiin. Lisätietoa: <a href="https://www.huijausinfo.fi" rel="noopener">huijausinfo.fi</a>. Keräysvahti ei ole viranomaisen palvelu.</p>
+</main>
+<footer class="ft"><div class="ft-in">
+<p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
+<p>Lupatiedot: Poliisihallitus, lista 25.8.2026. <a href="/tietoa/">Tietoa palvelusta ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">miika@eduskuntaseuranta.fi</span></p>
+<p class="mute">Saman ylläpitäjän palveluja: <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a> · <a href="https://suomitanaan.fi">Suomi Tänään</a></p>
+</div></footer>
+<script>(function(){
+var V=document.getElementById('viesti'),T=document.getElementById('tulos');
+var S=[
+ [/\b(heti|välittömästi|viimeistään|24 ?h|24 tunni|48 tunni|tänään|vanhenee|suljetaan|lukitaan|jäädytetään|estetään|kiireelli|viimeinen (päivä|mahdollisuus|muistutus))/i,2,'Kiire tai uhkailu','Huijari yrittää saada sinut toimimaan ennen kuin ehdit ajatella.'],
+ [/(pankkitunnu|verkkopankk|tunnuslu|tunnistau|kirjaudu|vahvista (henkilöllisyy|tieto|tili)|mobiilivarmen|päivitä tieto)/i,3,'Pyyntö kirjautua tai vahvistaa tietoja','Pankit ja viranomaiset eivät pyydä kirjautumaan viestin linkin kautta.'],
+ [/(kortin numero|korttinumero|korttitied|cvv|cvc|turvakoodi|luottokort)/i,3,'Kortin tietoja pyydetään','Älä koskaan anna kortin tietoja viestin perusteella.'],
+ [/(tullimaksu|toimitusmaksu|lähetysmaksu|käsittelymaksu|maksa \d|\d+[,.]\d{2} ?(€|eur)|€ ?\d+[,.]\d{2})/i,2,'Pieni maksu','Pieni summa, kuten 1,99 € tullimaksu, on tyypillinen tapa kalastella kortin tietoja.'],
+ [/(uusi numero|uusi numeroni|vaihdoin numero|puhelimeni hajosi|puhelin hajosi|kännykkä hajosi|tallenna (tämä|uusi) numero|hei äiti|hei isä|moi äiti|moi isä)/i,3,'"Uusi numero" -tarina','Soita läheisesi vanhaan, tuttuun numeroon ennen kuin teet mitään.'],
+ [/(voisitko maksaa|voitko maksaa|maksaisitko|lainaisitko|lainata rahaa|tarvitsen rahaa|lasku pitäisi maksaa|maksan huomenna takaisin)/i,3,'Rahapyyntö','Varmista aina toista kautta, kuka rahaa pyytää.'],
+ [/(turvatili|turvalliselle tilille|siirrä (rahasi|varat|rahat))/i,4,'"Turvatili"','Turvatiliä ei ole olemassa. Kukaan oikea taho ei pyydä siirtämään rahoja turvaan.'],
+ [/(anydesk|teamviewer|quicksupport|etäyhtey|etäkäyt|asenna (sovellus|ohjelma))/i,4,'Pyyntö asentaa ohjelma tai antaa etäyhteys','Etäyhteydellä huijari pääsee koneellesi ja verkkopankkiisi.'],
+ [/(lahjakort|gift ?card|google play|itunes|steam-kort|apple-kort)/i,3,'Lahjakortit','Maksu lahjakortteina on lähes aina huijaus.'],
+ [/(voitit|voittaja|olet voittanut|palkinto odottaa|arvonnan voit|ilmainen iphone)/i,2,'Voitto tai palkinto','Et voi voittaa arvonnassa, johon et osallistunut.'],
+ [/(tuotto|tuplaa|sijoita|kryptosijoit|bitcoin|passiivista tuloa|tienasin)/i,2,'Sijoitus- tai tuottolupaus','Suuret ja varmat tuotot ovat sijoitushuijauksen tunnusmerkki.'],
+ [/(älä kerro|pidä tämä (salassa|meidän välisenä)|kenellekään muulle|salassa)/i,3,'Salailu','Huijari haluaa estää sinua kysymästä neuvoa läheiseltä.'],
+ [/(poliisi|kela|verohallinto|veronpalautu|tulli|traficom|ulosotto|oikeus ?ministeriö)/i,1,'Viranomaisen nimi','Viranomaisten nimiä käytetään usein huijauksissa. Tarkista asia viranomaisen omasta palvelusta.'],
+ [/(paketti|lähetys|seurantanumero|toimitus epäonnistu|noutamaton)/i,1,'Pakettiviesti','Tarkista lähetykset itse kuljetusyhtiön sovelluksesta.']
+];
+var BRAND={posti:['posti.fi'],vero:['vero.fi'],kela:['kela.fi'],nordea:['nordea.fi','nordea.com'],danske:['danskebank.fi','danskebank.com'],'s-pankki':['s-pankki.fi'],spankki:['s-pankki.fi'],aktia:['aktia.fi'],traficom:['traficom.fi'],poliisi:['poliisi.fi'],tulli:['tulli.fi'],dhl:['dhl.com','dhl.fi'],mobilepay:['mobilepay.fi','mobilepay.dk'],op:['op.fi'],omavero:['vero.fi'],suomi:['suomi.fi'],netflix:['netflix.com'],microsoft:['microsoft.com']};
+var LYH=/^(bit\.ly|tinyurl\.com|t\.co|is\.gd|cutt\.ly|rb\.gy|shorturl\.at|ow\.ly|t\.ly|tiny\.cc|s\.id|rebrand\.ly)$/i;
+var TLD=/\.(top|xyz|icu|shop|live|online|click|info|site|buzz|cyou|rest|sbs|cfd|lol|vip|win|loan|support|help|link)$/i;
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function domainit(s){var r=[],m,re=/\b((?:https?:\/\/)?(?:www\.)?((?:[a-z0-9-]+\.)+[a-z]{2,})(?:[\/?#][^\s]*)?)/ig;
+ while((m=re.exec(s))){var d=m[2].toLowerCase();if(/\.(fi|com|net|org|info|io|me|ly|co|top|xyz|icu|shop|live|online|click|site|app|link|ru|cn|cc|eu|de|se|uk|us)$/.test(d)||/^https?:/i.test(m[1]))r.push(d)}return r}
+function rek(d){var p=d.split('.');return p.slice(-2).join('.')}
+function tarkista(){var s=V.value.trim();T.innerHTML='';if(!s){T.appendChild(el('p','mute','Liitä ensin viesti.'));return}
+ var osumat=[],pisteet=0;
+ S.forEach(function(r){if(r[0].test(s)){osumat.push([r[2],r[3],r[1]]);pisteet+=r[1]}});
+ var ds=domainit(s);
+ if(ds.length){pisteet+=1;osumat.push(['Viestissä on linkki','Älä avaa linkkiä. Mene palveluun itse kirjoittamalla osoite tai käyttämällä sovellusta.',1])}
+ ds.forEach(function(d){var r=rek(d);
+  if(LYH.test(r)||LYH.test(d)){pisteet+=3;osumat.push(['Lyhennetty linkki: '+d,'Lyhennetty linkki piilottaa, minne se oikeasti vie.',3])}
+  if(/^\d+\.\d+\.\d+\.\d+$/.test(d)||/xn--/.test(d)){pisteet+=4;osumat.push(['Epätavallinen osoite: '+d,'Osoite on IP-numero tai käyttää merkkejä, joilla matkitaan oikeaa nimeä.',4])}
+  else if(TLD.test(d)){pisteet+=2;osumat.push(['Epätavallinen verkkotunnus: '+d,'Suomalaiset palvelut käyttävät yleensä .fi- tai .com-osoitteita.',2])}
+  Object.keys(BRAND).forEach(function(b){var re=new RegExp('(^|[.-])'+b.replace('-','\\-')+'([.-]|$)');
+   if(re.test(d)&&BRAND[b].indexOf(r)<0){pisteet+=4;osumat.push(['Osoite matkii palvelua: '+d,'Osoite näyttää liittyvän palveluun '+b+', mutta oikea osoite on '+BRAND[b][0]+'.',4])}})});
+ var taso=pisteet>=6?['Paljon huijauksen merkkejä','korkea','Älä vastaa, älä avaa linkkejä äläkä maksa. Poista viesti. Jos jo toimit viestin ohjeiden mukaan, katso ohjeet alta.']
+  :pisteet>=3?['Useita varoitusmerkkejä','kohtalainen','Ole varovainen. Tarkista asia itse virallisesta lähteestä ennen kuin teet mitään.']
+  :['Ei selviä huijauksen merkkejä','matala','Tämä ei tarkoita, että viesti on varmasti turvallinen. Jos viestissä pyydetään rahaa tai tunnuksia, tarkista asia aina itse.'];
+ var b=el('div','arvio '+taso[1]);b.appendChild(el('b','',taso[0]));b.appendChild(el('p','',taso[2]));T.appendChild(b);
+ if(osumat.length){var ul=el('ul','merkit');osumat.sort(function(a,b){return b[2]-a[2]}).forEach(function(o){var li=el('li');li.appendChild(el('b','',o[0]));li.appendChild(el('span','',o[1]));ul.appendChild(li)});
+  T.appendChild(el('h2','','Löydetyt merkit'));T.appendChild(ul)}
+ if(taso[1]==='korkea'){var a=el('a','apunappi','Jos jo avasit linkin tai maksoit: ohjeet →');a.href='/huijaukset/apua/';T.appendChild(a)}
+ T.scrollIntoView({behavior:'smooth',block:'start'})}
+document.getElementById('tarkista').onclick=tarkista;
+document.getElementById('esim').onclick=function(){V.value='Posti: Lähetyksesi on pysäytetty puuttuvan tullimaksun (2,99 €) vuoksi. Maksa 24 tunnin kuluessa, muuten paketti palautetaan: https://posti-fi-seuranta.top/maksu';tarkista()};
+})();</script>
+<script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
+</body>
+</html>
