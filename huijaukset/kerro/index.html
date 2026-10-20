@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kerro huijausyrityksestä nimettömästi | Keräysvahti</title>
+<meta name="description" content="Yrittikö joku huijata sinua? Kerro nimettömästi, niin voimme varoittaa muita. Nimeä tai yhteystietoja ei tallenneta.">
+<link rel="canonical" href="https://keraysvahti.fi/huijaukset/kerro/">
+<meta property="og:site_name" content="Keräysvahti">
+<meta property="og:title" content="Kerro huijausyrityksestä nimettömästi | Keräysvahti">
+<meta property="og:description" content="Yrittikö joku huijata sinua? Kerro nimettömästi, niin voimme varoittaa muita. Nimeä tai yhteystietoja ei tallenneta.">
+<meta property="og:url" content="https://keraysvahti.fi/huijaukset/kerro/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fi_FI">
+<meta property="og:image" content="https://keraysvahti.fi/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1e6b4f">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Keräysvahti">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/style.css?v=e11990ef">
+
+</head>
+<body>
+<a class="skip" href="#sisalto">Siirry sisältöön</a>
+<header class="hd"><div class="hd-in">
+<a class="brand" href="/"><svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5 4.5 7v8.2c0 7 4.8 12.6 11.5 14.3 6.7-1.7 11.5-7.3 11.5-14.3V7z" fill="var(--acc)"/><path d="m10.2 16.3 4 4 7.6-8.1" fill="none" stroke="var(--acc-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Keräysvahti</span></a>
+<nav aria-label="Päävalikko"><a href="/">Haku</a><a href="/huijaukset/">Huijaukset</a><a href="/kunnat/">Paikkakunnat</a><a href="/tietoa/">Tietoa</a></nav>
+</div></header>
+<main id="sisalto" class="wrap">
+<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a> › <a href="/huijaukset/">Huijaukset</a></nav>
+<h1>Yrittikö joku huijata sinua?</h1>
+<p class="lead">Kerro nimettömästi, mitä tapahtui. Kertomuksesi auttaa varoittamaan muita: kun tiedämme, millaisia huijauksia nyt liikkuu, voimme kertoa niistä ajoissa.</p>
+<p class="yksityisyys"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 4.5 5.8v5.6c0 4.8 3.2 8.6 7.5 9.8 4.3-1.2 7.5-5 7.5-9.8V5.8z"/><path d="m8.6 12.2 2.4 2.4 4.6-4.9"/></svg> Viesti menee vain Keräysvahdin ylläpitäjälle. Nimeäsi, sähköpostiasi tai IP-osoitettasi ei tallenneta.</p>
+<form id="kerro" class="kerro" novalidate>
+<label for="k-tyyppi">Mitä tapahtui?</label>
+<select id="k-tyyppi" required><option>Valekerääjä</option><option>Puhelu</option><option>Tekstiviesti tai sähköposti</option><option>Some tai nettikauppa</option><option>Sijoitus tai krypto</option><option>Romanssi</option><option>Muu</option></select>
+<label for="k-teksti">Kerro omin sanoin</label>
+<textarea id="k-teksti" rows="7" maxlength="4000" required placeholder="Esim. Kaupan ovella oli kerääjä, joka keräsi sairaille lapsille mutta ei kertonut keräysnumeroa…"></textarea>
+<p class="small mute">Älä kirjoita omaa nimeäsi, puhelinnumeroasi, osoitettasi tai muita tietoja, joista sinut voi tunnistaa.</p>
+<label for="k-kunta">Paikkakunta <span class="mute">(vapaaehtoinen)</span></label>
+<input id="k-kunta" type="text" maxlength="60" autocomplete="off">
+<label class="lupa"><input type="checkbox" id="k-lupa"> <span><b>Saa käyttää nimettömänä</b> Keräysvahdin varoituksissa ja mainonnassa, esimerkiksi somejulkaisuissa. Mahdolliset tunnistettavat tiedot poistetaan ennen käyttöä.</span></label>
+<input type="text" id="k-hp" name="sivusto" tabindex="-1" autocomplete="off" class="sr" aria-hidden="true">
+<button type="submit" class="btn" id="k-laheta">Lähetä nimettömästi</button>
+<p id="k-tila" aria-live="polite"></p>
+</form>
+<aside class="note"><b>Menetitkö rahaa?</b> Tämä lomake ei korvaa rikosilmoitusta. Soita heti pankkiin ja tee rikosilmoitus poliisille: <a href="/huijaukset/apua/">ohjeet vaihe vaiheelta</a>.</aside>
+<p class="mute small">Tietosuoja: kertomus tallennetaan enintään 12 kuukaudeksi ja välitetään ylläpitäjän sähköpostiin. Lähettäjästä ei tallenneta tunnistetietoja; roskapostin estämiseksi IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste. Jos annoit luvan, kertomusta voidaan käyttää nimettömänä varoituksissa. Lisätietoja: <a href="/tietoa/">Tietoa ja tietosuoja</a>.</p>
+</main>
+<footer class="ft"><div class="ft-in">
+<p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
+<p>Lupatiedot: Poliisihallitus, lista 25.8.2026. <a href="/tietoa/">Tietoa palvelusta ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">miika@eduskuntaseuranta.fi</span></p>
+<p class="mute">Saman ylläpitäjän palveluja: <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a> · <a href="https://suomitanaan.fi">Suomi Tänään</a></p>
+</div></footer>
+<script>(function(){var f=document.getElementById('kerro');if(!f)return;var t0=Date.now(),T=document.getElementById('k-tila'),B=document.getElementById('k-laheta');
+f.onsubmit=function(e){e.preventDefault();var x=document.getElementById('k-teksti').value.trim();
+ if(x.length<20){T.textContent='Kirjoita vähintään pari lausetta.';T.className='virhe';return}
+ B.disabled=true;T.className='';T.textContent='Lähetetään…';
+ fetch('https://keraysvahti-viestit.miika-koskela990.workers.dev/viesti',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+  tyyppi:document.getElementById('k-tyyppi').value,teksti:x,kunta:document.getElementById('k-kunta').value,lupa:document.getElementById('k-lupa').checked,
+  hp:document.getElementById('k-hp').value,kesto:Math.round((Date.now()-t0)/1000)})}).then(function(r){return r.json().then(function(d){return[r.ok,d]})})
+ .then(function(a){if(a[0]&&a[1].ok){f.innerHTML='<div class="arvio matala"><b>Kiitos!</b><p>Kertomuksesi on vastaanotettu. Se auttaa varoittamaan muita.</p></div>'}
+  else{T.className='virhe';T.textContent=(a[1]&&a[1].virhe)||'Lähetys ei onnistunut. Yritä uudelleen.';B.disabled=false}})
+ .catch(function(){T.className='virhe';T.textContent='Lähetys ei onnistunut. Tarkista verkkoyhteys ja yritä uudelleen.';B.disabled=false})}})();</script>
+<script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
+</body>
+</html>

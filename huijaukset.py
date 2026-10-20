@@ -41,7 +41,8 @@ def tyokalurivi():
     return ('<div class="tyokalut">'
             '<a class="tk" href="/huijaukset/tarkista-viesti/"><b>Tarkista viesti</b><span>Liitä epäilyttävä viesti, ja näet varoitusmerkit.</span></a>'
             '<a class="tk" href="/huijaukset/visa/"><b>Tunnistatko huijauksen?</b><span>10 esimerkkiä. Testaa itsesi.</span></a>'
-            '<a class="tk" href="/huijaukset/muistilista/"><b>Muistilista vanhemmille</b><span>Tulosta tai lähetä läheisellesi.</span></a></div>')
+            '<a class="tk" href="/huijaukset/muistilista/"><b>Muistilista vanhemmille</b><span>Tulosta tai lähetä läheisellesi.</span></a>'
+            '<a class="tk" href="/huijaukset/kerro/"><b>Yrittikö joku huijata?</b><span>Kerro nimettömästi, niin varoitamme muita.</span></a></div>')
 
 
 def rakenna(sivu, kirjoita, esc, ik):
@@ -103,7 +104,7 @@ def rakenna(sivu, kirjoita, esc, ik):
 <li><b>Vaihda salasanat,</b> jotka huijari on voinut nähdä. Aloita sähköpostista ja tee vaihto toisella laitteella.</li>
 <li><b>Tee rikosilmoitus</b> poliisille. Sen voi tehdä verkossa: <a href="https://poliisi.fi" rel="noopener">poliisi.fi</a>. Liitä mukaan viestit, puhelinnumerot, tilinumerot ja kuitit. Pankki voi tarvita rikosilmoituksen.</li>
 <li><b>Jos henkilötunnuksesi tai henkilötietosi joutuivat huijarille,</b> voit pyytää luottotietoihisi maksuttoman väärinkäytösmerkinnän (Suomen Asiakastieto). Se vaikeuttaa luoton ottamista nimissäsi.</li>
-<li><b>Ilmoita huijauksesta</b> <a href="https://www.kyberturvallisuuskeskus.fi" rel="noopener">Kyberturvallisuuskeskukselle</a>, niin muita voidaan varoittaa. Sijoitushuijauksesta voi ilmoittaa myös <a href="https://www.finanssivalvonta.fi" rel="noopener">Finanssivalvonnalle</a>.</li>
+<li><b>Ilmoita huijauksesta</b> <a href="https://www.kyberturvallisuuskeskus.fi" rel="noopener">Kyberturvallisuuskeskukselle</a>, niin muita voidaan varoittaa. Voit kertoa tapahtuneesta myös nimettömästi <a href="/huijaukset/kerro/">Keräysvahdille</a>. Sijoitushuijauksesta voi ilmoittaa myös <a href="https://www.finanssivalvonta.fi" rel="noopener">Finanssivalvonnalle</a>.</li>
 <li><b>Hae tukea.</b> Rikosuhripäivystys auttaa maksutta: <a href="tel:116006">116 006</a>, <a href="https://www.riku.fi" rel="noopener">riku.fi</a>. Kerro myös läheiselle.</li>
 </ol>
 <aside class="note"><b>Varo \"rahojen palautuspalveluita\".</b> Huijauksen jälkeen voi tulla yhteydenottoja, joissa luvataan saada rahat takaisin maksua vastaan. Ne ovat usein saman huijauksen jatkoa.</aside>
@@ -111,6 +112,29 @@ def rakenna(sivu, kirjoita, esc, ik):
 <p class="mute small">{LAHTEET}</p>"""
     k("/huijaukset/apua/", "Jouduin huijatuksi – mitä nyt? | Keräysvahti",
       "Toimi heti, jos jouduit huijatuksi: soita pankkiin (Sulkupalvelu 020 333), tee rikosilmoitus ja hae tukea. Ohjeet vaihe vaiheelta.", runko)
+
+    # ---- nimetön kertomus ----
+    runko = f"""{murut(("Keräysvahti", "/"), ("Huijaukset", "/huijaukset/"))}
+<h1>Yrittikö joku huijata sinua?</h1>
+<p class="lead">Kerro nimettömästi, mitä tapahtui. Kertomuksesi auttaa varoittamaan muita: kun tiedämme, millaisia huijauksia nyt liikkuu, voimme kertoa niistä ajoissa.</p>
+<p class="yksityisyys">{ik("shield", "ico")} Viesti menee vain Keräysvahdin ylläpitäjälle. Nimeäsi, sähköpostiasi tai IP-osoitettasi ei tallenneta.</p>
+<form id="kerro" class="kerro" novalidate>
+<label for="k-tyyppi">Mitä tapahtui?</label>
+<select id="k-tyyppi" required><option>Valekerääjä</option><option>Puhelu</option><option>Tekstiviesti tai sähköposti</option><option>Some tai nettikauppa</option><option>Sijoitus tai krypto</option><option>Romanssi</option><option>Muu</option></select>
+<label for="k-teksti">Kerro omin sanoin</label>
+<textarea id="k-teksti" rows="7" maxlength="4000" required placeholder="Esim. Kaupan ovella oli kerääjä, joka keräsi sairaille lapsille mutta ei kertonut keräysnumeroa…"></textarea>
+<p class="small mute">Älä kirjoita omaa nimeäsi, puhelinnumeroasi, osoitettasi tai muita tietoja, joista sinut voi tunnistaa.</p>
+<label for="k-kunta">Paikkakunta <span class="mute">(vapaaehtoinen)</span></label>
+<input id="k-kunta" type="text" maxlength="60" autocomplete="off">
+<label class="lupa"><input type="checkbox" id="k-lupa"> <span><b>Saa käyttää nimettömänä</b> Keräysvahdin varoituksissa ja mainonnassa, esimerkiksi somejulkaisuissa. Mahdolliset tunnistettavat tiedot poistetaan ennen käyttöä.</span></label>
+<input type="text" id="k-hp" name="sivusto" tabindex="-1" autocomplete="off" class="sr" aria-hidden="true">
+<button type="submit" class="btn" id="k-laheta">Lähetä nimettömästi</button>
+<p id="k-tila" aria-live="polite"></p>
+</form>
+<aside class="note"><b>Menetitkö rahaa?</b> Tämä lomake ei korvaa rikosilmoitusta. Soita heti pankkiin ja tee rikosilmoitus poliisille: <a href="/huijaukset/apua/">ohjeet vaihe vaiheelta</a>.</aside>
+<p class="mute small">Tietosuoja: kertomus tallennetaan enintään 12 kuukaudeksi ja välitetään ylläpitäjän sähköpostiin. Lähettäjästä ei tallenneta tunnistetietoja; roskapostin estämiseksi IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste. Jos annoit luvan, kertomusta voidaan käyttää nimettömänä varoituksissa. Lisätietoja: <a href="/tietoa/">Tietoa ja tietosuoja</a>.</p>"""
+    k("/huijaukset/kerro/", "Kerro huijausyrityksestä nimettömästi | Keräysvahti",
+      "Yrittikö joku huijata sinua? Kerro nimettömästi, niin voimme varoittaa muita. Nimeä tai yhteystietoja ei tallenneta.", runko, skripti=KERROJS)
 
     # ---- viestintarkistin ----
     runko = f"""{murut(("Keräysvahti", "/"), ("Huijaukset", "/huijaukset/"))}
@@ -275,6 +299,17 @@ function nayta(){B.innerHTML='';
    var x=el('button','btn',i+1<VISA.length?'Seuraava':'Katso tulos');x.type='button';x.onclick=function(){i++;nayta();B.scrollIntoView({block:'start'})};s.appendChild(x);B.appendChild(s);x.focus()};n.appendChild(b)});
  B.appendChild(n)}
 nayta()})();</script>"""
+
+KERROJS = r"""<script>(function(){var f=document.getElementById('kerro');if(!f)return;var t0=Date.now(),T=document.getElementById('k-tila'),B=document.getElementById('k-laheta');
+f.onsubmit=function(e){e.preventDefault();var x=document.getElementById('k-teksti').value.trim();
+ if(x.length<20){T.textContent='Kirjoita vähintään pari lausetta.';T.className='virhe';return}
+ B.disabled=true;T.className='';T.textContent='Lähetetään…';
+ fetch('https://keraysvahti-viestit.miika-koskela990.workers.dev/viesti',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+  tyyppi:document.getElementById('k-tyyppi').value,teksti:x,kunta:document.getElementById('k-kunta').value,lupa:document.getElementById('k-lupa').checked,
+  hp:document.getElementById('k-hp').value,kesto:Math.round((Date.now()-t0)/1000)})}).then(function(r){return r.json().then(function(d){return[r.ok,d]})})
+ .then(function(a){if(a[0]&&a[1].ok){f.innerHTML='<div class="arvio matala"><b>Kiitos!</b><p>Kertomuksesi on vastaanotettu. Se auttaa varoittamaan muita.</p></div>'}
+  else{T.className='virhe';T.textContent=(a[1]&&a[1].virhe)||'Lähetys ei onnistunut. Yritä uudelleen.';B.disabled=false}})
+ .catch(function(){T.className='virhe';T.textContent='Lähetys ei onnistunut. Tarkista verkkoyhteys ja yritä uudelleen.';B.disabled=false})}})();</script>"""
 
 JAAJS = r"""<script>(function(){var b=document.getElementById('jaa');if(!b)return;b.onclick=function(){
 var u=location.href,t='Muistilista huijauksia vastaan. Tulosta ja laita jääkaapin oveen:';

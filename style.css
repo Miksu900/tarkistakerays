@@ -203,3 +203,10 @@ button.btn{border:0;cursor:pointer;font:700 1rem var(--f-body)}
  body{background:#fff}.hd,.ft,.skip,.ei-tulostu,.asenna-laatikko{display:none!important}body::before{display:none}
  .wrap{padding:0;max-width:none}.a4{border:0;padding:0;font-size:15pt}.a4 h2{font-size:24pt}
  @page{size:A4;margin:16mm}}
+.kerro{display:flex;flex-direction:column;gap:8px}
+.kerro label{font-weight:700;margin-top:6px}
+.kerro select,.kerro input[type=text]{font:16px var(--f-body);color:var(--ink);background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:10px 12px}
+.kerro .lupa{display:flex;gap:10px;align-items:flex-start;font-weight:400;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:6px 0}
+.kerro .lupa input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--acc)}
+.kerro .btn{align-self:flex-start;margin-top:6px}.kerro .btn:disabled{opacity:.6}
+#k-tila.virhe{color:var(--warn);font-weight:600}
