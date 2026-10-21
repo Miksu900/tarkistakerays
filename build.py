@@ -154,7 +154,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
-<p>Lupatiedot: Poliisihallitus, lista {esc(LISTA_PVM)}. <a href="/tietoa/">Tietoa palvelusta ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">{YHTEYS}</span></p>
+<p>Lupatiedot: Poliisihallitus, lista {esc(LISTA_PVM)}. <a href="/tietoa/">Tietoa, käyttöehdot ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">{YHTEYS}</span></p>
 <p class="mute">Saman ylläpitäjän palveluja: <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a> · <a href="https://suomitanaan.fi">Suomi Tänään</a></p>
 </div></footer>
 {skripti}
@@ -349,6 +349,9 @@ runko = f"""<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti<
 <p>Keräysvahti ei käytä evästeitä eikä vaadi kirjautumista. Haku tehdään kokonaan omassa selaimessasi, eikä hakusanoja lähetetä minnekään. Kävijämäärät lasketaan Cloudflare Web Analytics -palvelulla, joka ei käytä evästeitä eikä tunnista yksittäisiä kävijöitä. Sivusto toimii GitHub Pages- ja Cloudflare-palveluissa, jotka voivat tallentaa teknisiä lokitietoja (kuten IP-osoitteen) palvelun toiminnan ja turvallisuuden vuoksi.</p>
 <p><b>Nimettömät huijauskertomukset.</b> Jos lähetät kertomuksen <a href="/huijaukset/kerro/">lomakkeella</a>, viesti tallennetaan enintään 12 kuukaudeksi Cloudflaren palveluun ja välitetään ylläpitäjän sähköpostiin (Brevo). Lähettäjän nimeä, yhteystietoja tai IP-osoitetta ei tallenneta; roskapostin estämiseksi IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste. Kertomusta käytetään nimettömänä varoituksissa ja mainonnassa vain, jos lähettäjä on antanut siihen luvan. Voit pyytää kertomuksen poistamista kertomalla sen sisällön ja lähetysajan osoitteeseen <span class="mono">{YHTEYS}</span>.</p>
 <p>Sivustolla julkaistaan vain järjestöjen (yhdistysten, säätiöiden ja seurakuntien) lupatietoja sellaisina kuin poliisi on ne julkaissut. Fontit ladataan Googlen Fonts-palvelusta.</p>
+<h2>Käyttöehdot ja maksullisuus</h2>
+<p>Keräysvahti on tällä hetkellä maksuton. Ylläpitäjä pidättää oikeuden muuttaa palvelun sisältöä ja käyttöehtoja sekä ottaa käyttöön maksullisia palveluita tai ominaisuuksia. Muutoksista kerrotaan tällä sivulla etukäteen. Jo käytetyistä maksuttomista palveluista ei peritä maksua jälkikäteen.</p>
+<p>Palvelun tiedot ovat yleistä ohjeistusta, eivät oikeudellista neuvontaa. Ylläpitäjä ei vastaa tietojen virheettömyydestä tai niiden perusteella tehdyistä päätöksistä. Varmista tarvittaessa tieto viranomaiselta.</p>
 <h2>Virheet ja korjaukset</h2>
 <p>Jos järjestönne tieto on väärin tai lupa on päättynyt, ilmoita osoitteeseen <span class="mono">{YHTEYS}</span>. Korjaamme tiedon tai poistamme sen, jos se ei enää ole poliisin listalla.</p>
 <h2>Tulossa</h2>
