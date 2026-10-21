@@ -155,7 +155,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
 <p>Lupatiedot: Poliisihallitus, lista {esc(LISTA_PVM)}. <a href="/tietoa/">Tietoa, käyttöehdot ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">{YHTEYS}</span></p>
-<p class="mute">Saman ylläpitäjän palveluja: <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a> · <a href="https://suomitanaan.fi">Suomi Tänään</a></p>
+<p class="mute">Keräysvahti on osa <a href="https://faktapiste.fi">Faktapistettä</a>. Muita palveluja: <a href="https://pykalavahti.fi">Pykälävahti</a> · <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a></p>
 </div></footer>
 {skripti}
 {ASENNUSJS}
