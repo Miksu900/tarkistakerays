@@ -7,7 +7,7 @@ from huijaukset_data import TYYPIT, VISA, KAUSI, LAHTEET
 JULKINEN = True
 # Pykälävahdin osoite ristiinlinkitystä varten. Tyhjä = linkit piilossa (kytketään, kun oma domain on valmis).
 import os, urllib.parse
-PYKALAVAHTI = os.environ.get("PYKALAVAHTI_URL", "").rstrip("/")
+PYKALAVAHTI = os.environ.get("PYKALAVAHTI_URL", "https://pykalavahti.fi").rstrip("/")
 PV_KYSYMYS = {
  "valekeraaja": "Annoin rahaa kerääjälle, jolla ei ollut lupaa. Saanko rahani takaisin ja onko se rikos?",
  "valepoliisi": "Siirsin rahaa valepoliisin ohjeesta. Onko pankki velvollinen korvaamaan menetykseni?",
