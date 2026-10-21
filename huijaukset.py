@@ -5,6 +5,27 @@ from huijaukset_data import TYYPIT, VISA, KAUSI, LAHTEET
 
 # False = luonnos (noindex, ei valikossa eikä sivukartassa). True = julkinen.
 JULKINEN = True
+# Pykälävahdin osoite ristiinlinkitystä varten. Tyhjä = linkit piilossa (kytketään, kun oma domain on valmis).
+import os, urllib.parse
+PYKALAVAHTI = os.environ.get("PYKALAVAHTI_URL", "").rstrip("/")
+PV_KYSYMYS = {
+ "valekeraaja": "Annoin rahaa kerääjälle, jolla ei ollut lupaa. Saanko rahani takaisin ja onko se rikos?",
+ "valepoliisi": "Siirsin rahaa valepoliisin ohjeesta. Onko pankki velvollinen korvaamaan menetykseni?",
+ "huijausviesti": "Annoin korttitietoni huijausviestin linkkiin ja tililtäni vietiin rahaa. Vastaako pankki?",
+ "hei-aiti": "Maksoin laskun huijarille, joka esiintyi lapsenani. Voinko saada rahat takaisin?",
+ "sijoitushuijaus": "Menetin rahaa sijoitushuijaukseen. Mitä oikeuksia minulla on ja kannattaako tehdä rikosilmoitus?",
+ "romanssihuijaus": "Lähetin rahaa netissä tapaamalleni ihmiselle, joka osoittautui huijariksi. Onko se petos ja saanko rahat takaisin?",
+ "nettikauppa": "Maksoin verkkokaupassa tuotteesta, jota ei koskaan tullut. Miten saan rahani takaisin?",
+ "tekoaly": "Minulta huijattiin rahaa tekoälyllä tehdyllä äänellä. Onko pankki vastuussa?",
+ "it-tuki": "Annoin etäyhteyden huijarille, joka vei rahaa tililtäni. Kuka vastaa menetyksistä?",
+}
+
+def pv_laatikko(kysymys):
+    if not PYKALAVAHTI:
+        return ""
+    q = urllib.parse.quote(kysymys)
+    return (f'<aside class="pv"><b>Mitä laki sanoo?</b> Kysy ilmaiseksi Pykälävahdilta, joka vastaa pykälien kanssa ja kirjoittaa tarvittaessa valmiin vaatimuksen. '
+            f'<a href="{PYKALAVAHTI}/?q={q}" rel="noopener">Kysy: \u201d{kysymys}\u201d →</a></aside>')
 
 SULKU = '<a class="soita" href="tel:+35820333"><b>020 333</b><span>Sulkupalvelu: kortit ja verkkopankki kiinni, 24 h</span></a>'
 HATA = '<a class="soita hata" href="tel:112"><b>112</b><span>Hätänumero, kun vaara on päällä</span></a>'
@@ -84,6 +105,7 @@ def rakenna(sivu, kirjoita, esc, ik):
 <section class="huij varoitus"><h2>Varoitusmerkit</h2><ul>{lst(esc(x) for x in t["merkit"])}</ul></section>
 <section class="huij"><h2>Toimi näin</h2><ul>{lst(t["toimi"])}</ul></section>
 {apunappi}
+{pv_laatikko(PV_KYSYMYS.get(t["slug"], ""))}
 <section><h2>Usein kysyttyä</h2>{"".join(f'<details class="faq"><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in t["faq"])}</section>
 </article>
 {tyokalurivi()}
@@ -102,6 +124,7 @@ def rakenna(sivu, kirjoita, esc, ik):
 <li><b>Soita heti pankkiin.</b> Pyydä sulkemaan kortit ja verkkopankkitunnukset ja pysäyttämään maksut. Oman pankkisi numero on kortin takana ja pankin sivuilla. Kun pankin asiakaspalvelu ei vastaa, Sulkupalvelu palvelee ympäri vuorokauden: <a href="tel:+35820333">020 333</a>.</li>
 <li><b>Jos annoit etäyhteyden koneeseesi,</b> irrota kone verkosta. Älä käytä sillä verkkopankkia ennen kuin kone on tarkistettu.</li>
 <li><b>Vaihda salasanat,</b> jotka huijari on voinut nähdä. Aloita sähköpostista ja tee vaihto toisella laitteella.</li>
+{('<li><b>Vaadi rahat takaisin kirjallisesti.</b> <a href="' + PYKALAVAHTI + '/kirje/" rel="noopener">Pykälävahti</a> kirjoittaa vaatimuksen pankille tai myyjälle oikeine pykälineen, maksutta.</li>') if PYKALAVAHTI else ''}
 <li><b>Tee rikosilmoitus</b> poliisille. Sen voi tehdä verkossa: <a href="https://poliisi.fi" rel="noopener">poliisi.fi</a>. Liitä mukaan viestit, puhelinnumerot, tilinumerot ja kuitit. Pankki voi tarvita rikosilmoituksen.</li>
 <li><b>Jos henkilötunnuksesi tai henkilötietosi joutuivat huijarille,</b> voit pyytää luottotietoihisi maksuttoman väärinkäytösmerkinnän (Suomen Asiakastieto). Se vaikeuttaa luoton ottamista nimissäsi.</li>
 <li><b>Ilmoita huijauksesta</b> <a href="https://www.kyberturvallisuuskeskus.fi" rel="noopener">Kyberturvallisuuskeskukselle</a>, niin muita voidaan varoittaa. Voit kertoa tapahtuneesta myös nimettömästi <a href="/huijaukset/kerro/">Keräysvahdille</a>. Sijoitushuijauksesta voi ilmoittaa myös <a href="https://www.finanssivalvonta.fi" rel="noopener">Finanssivalvonnalle</a>.</li>

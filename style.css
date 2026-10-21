@@ -210,3 +210,5 @@ button.btn{border:0;cursor:pointer;font:700 1rem var(--f-body)}
 .kerro .lupa input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--acc)}
 .kerro .btn{align-self:flex-start;margin-top:6px}.kerro .btn:disabled{opacity:.6}
 #k-tila.virhe{color:var(--warn);font-weight:600}
+.pv{background:var(--paper);border:1px solid var(--line);border-left:4px solid #14213d;border-radius:12px;padding:12px 14px;font-size:.95rem}
+.pv a{display:block;margin-top:6px;font-weight:600}
