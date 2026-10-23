@@ -212,3 +212,4 @@ button.btn{border:0;cursor:pointer;font:700 1rem var(--f-body)}
 #k-tila.virhe{color:var(--warn);font-weight:600}
 .pv{background:var(--paper);border:1px solid var(--line);border-left:4px solid #14213d;border-radius:12px;padding:12px 14px;font-size:.95rem}
 .pv a{display:block;margin-top:6px;font-weight:600}
+.varoita{margin:32px 0 8px;padding:16px 18px;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px}.varoita p{margin:0 0 10px}

@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/style.css?v=6ecf7fc2">
+<link rel="stylesheet" href="/style.css?v=d9126f02">
 
 </head>
 <body>
@@ -47,6 +47,10 @@
 <section aria-labelledby="tyypit-h"><h2 id="tyypit-h">Yleisimmät huijaukset</h2><div class="tyypit"><a class="tyyppi" href="/huijaukset/valekeraaja/"><h3>Valekerääjä ovella, kaupassa tai parkkipaikalla</h3><p>Lista tai lipas, sairaiden lasten tai vammaisten nimissä, mutta ei keräysnumeroa.</p></a><a class="tyyppi" href="/huijaukset/valepoliisi/"><h3>Valepoliisi tai valepankkivirkailija soittaa</h3><p>Soittaja väittää tililläsi olevan väärinkäytöksiä ja pyytää tunnuksia tai siirtoa &quot;turvatilille&quot;.</p></a><a class="tyyppi" href="/huijaukset/huijausviesti/"><h3>Huijausviesti: paketti, pankki, vero tai viranomainen</h3><p>Tekstiviesti tai sähköposti, jossa on kiire ja linkki. Pieni maksu tai tietojen &quot;vahvistus&quot;.</p></a><a class="tyyppi" href="/huijaukset/hei-aiti/"><h3>&quot;Hei äiti, tämä on uusi numeroni&quot;</h3><p>Viesti tuntemattomasta numerosta läheisen nimissä. Pian pyydetään maksamaan lasku.</p></a><a class="tyyppi" href="/huijaukset/sijoitushuijaus/"><h3>Sijoitus- ja kryptohuijaus</h3><p>Mainos lupaa suuret tuotot, usein julkkiksen kuvalla. &quot;Neuvoja&quot; ohjaa siirtämään lisää rahaa.</p></a><a class="tyyppi" href="/huijaukset/romanssihuijaus/"><h3>Romanssihuijaus</h3><p>Netissä tavattu ihminen rakastuu nopeasti, mutta ei pääse koskaan tapaamaan. Sitten tulee hätä.</p></a><a class="tyyppi" href="/huijaukset/nettikauppa/"><h3>Nettikauppa- ja kirpputorihuijaus</h3><p>Liian halpa tarjous ja kiire. Tai &quot;ostaja&quot; lähettää linkin, jonka kautta muka saat rahat.</p></a><a class="tyyppi" href="/huijaukset/tekoaly/"><h3>Tekoälyllä tehty ääni tai video</h3><p>Puhelu kuulostaa läheiseltä tai esimieheltä, ja rahaa tarvitaan heti. Video voi esittää julkkista.</p></a><a class="tyyppi" href="/huijaukset/it-tuki/"><h3>IT-tukihuijaus</h3><p>&quot;Microsoftin tuki&quot; soittaa ja pyytää asentamaan etäkäyttöohjelman.</p></a></div></section>
 <p class="kielet">På svenska: <a href="/sv/bedragerier/" hreflang="sv" lang="sv">Känn igen bedrägerier</a> · In English: <a href="/en/scams/" hreflang="en" lang="en">Recognise a scam</a></p>
 <p class="mute small">Lähteet: poliisin ohjeet huijauksista ja laittomista rahankeräyksistä; Finanssivalvonta (varoituslista ja tiedote 15.9.2025 sijoitushuijauksista); Kuluttajaliitto, <i>Tunnista nettihuijaus</i> (2026); Kyberturvallisuuskeskus; pankkien ohjeet huijaustilanteisiin. Lisätietoa: <a href="https://www.huijausinfo.fi" rel="noopener">huijausinfo.fi</a>. Keräysvahti ei ole viranomaisen palvelu.</p>
+<section class="varoita" aria-label="Varoita läheistä">
+<p><b>Tunnetko jonkun, jolle ovelle tulee kerääjiä?</b> Lähetä hänelle vinkki – se vie viisi sekuntia.</p>
+<button type="button" class="btn" id="varoita">📲 Varoita läheistä</button>
+</section>
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
@@ -64,5 +68,8 @@ fetch('/huijaukset/varoitukset.json',{cache:'no-cache'}).then(function(r){return
  var p=new Date(d.p);b.appendChild(el('p','mute small','Päivitetty '+p.getDate()+'.'+(p.getMonth()+1)+'. klo '+p.getHours()+'.'+String(p.getMinutes()).padStart(2,'0')+'. Otsikot linkkeineen ovat alkuperäisistä lähteistä (Kyberturvallisuuskeskus ja suomalaiset mediat).'))
 }).catch(function(){b.querySelector('.mute').textContent='Uutisten lataus ei onnistunut.'})})();</script>
 <script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
+<script>(function(){var b=document.getElementById("varoita");if(!b)return;b.onclick=function(){
+var t="Hei! Ovelle tulee nykyään myös huijarikerääjiä. Tällä voi tarkistaa ilmaiseksi, onko keräyksellä poliisin lupa ja mihin tilille lahjoitus kuuluu:",u="https://keraysvahti.fi/";
+if(navigator.share)navigator.share({text:t,url:u}).catch(function(){});else location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}})();</script>
 </body>
 </html>

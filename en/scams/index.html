@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/style.css?v=6ecf7fc2">
+<link rel="stylesheet" href="/style.css?v=d9126f02">
 
 </head>
 <body>
@@ -47,6 +47,7 @@
 <section class="huij"><h2>Fake fundraiser</h2><p>A collector at your door or outside a shop asks for money, often for sick children, but cannot give a fundraising permit number.</p><ul><li>Ask for the fundraising permit number.</li><li>Check the fundraiser on Keräysvahti and donate only to the account in the permit.</li><li>Don&#x27;t open your wallet in front of a stranger.</li></ul></section><section class="huij"><h2>Fake police officer or bank employee calls</h2><p>The caller claims your account is being misused and asks for your credentials or to move money to a &quot;safe account&quot;.</p><ul><li>The police or your bank will never ask for your credentials over the phone.</li><li>Hang up and call your bank&#x27;s official number yourself.</li><li>There is no such thing as a &quot;safe account&quot;.</li></ul></section><section class="huij"><h2>Scam messages</h2><p>Texts or emails about parcels, taxes or your bank, with urgency and a link to a fake website.</p><ul><li>Don&#x27;t open the link. Go to the service yourself.</li><li>Banks never ask you to log in through a link in a message.</li></ul></section><section class="huij"><h2>&quot;Hi mum, this is my new number&quot;</h2><p>A message from an unknown number in a family member&#x27;s name, soon asking you to pay a bill.</p><ul><li>Call your family member&#x27;s old number and ask.</li><li>Don&#x27;t pay to an unknown account.</li></ul></section><section class="huij"><h2>Investment and crypto scams</h2><p>Ads featuring celebrities promise quick profits. An &quot;adviser&quot; gets you to transfer more and more money.</p><ul><li>Check the company on the Finnish Financial Supervisory Authority&#x27;s warning list.</li><li>Never install remote access software at someone&#x27;s request.</li></ul></section><section class="huij"><h2>Romance scam</h2><p>Someone you met online falls in love quickly but can never meet. Then they need money.</p><ul><li>Never send money to someone you haven&#x27;t met.</li><li>Tell someone close to you.</li></ul></section>
 <p>More tools are available in Finnish: <a href="/huijaukset/" hreflang="fi" lang="fi">Tunnista huijaus (suomeksi)</a> · <a href="/" hreflang="fi" lang="fi">Keräysvahti</a></p>
 <p class="mute small">Sources: the Finnish police, the Financial Supervisory Authority and the National Cyber Security Centre. Keräysvahti is not a government service.</p>
+
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
@@ -55,5 +56,8 @@
 </div></footer>
 
 <script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
+<script>(function(){var b=document.getElementById("varoita");if(!b)return;b.onclick=function(){
+var t="Hei! Ovelle tulee nykyään myös huijarikerääjiä. Tällä voi tarkistaa ilmaiseksi, onko keräyksellä poliisin lupa ja mihin tilille lahjoitus kuuluu:",u="https://keraysvahti.fi/";
+if(navigator.share)navigator.share({text:t,url:u}).catch(function(){});else location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}})();</script>
 </body>
 </html>

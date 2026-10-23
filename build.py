@@ -151,6 +151,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 </div></header>
 <main id="sisalto" class="wrap">
 {runko}
+{VAROITA if lang == "fi" else ""}
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
@@ -159,11 +160,14 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 </div></footer>
 {skripti}
 {ASENNUSJS}
+{VAROITAJS}
 </body>
 </html>
 """
 
 
+VAROITA = '<section class="varoita" aria-label="Varoita läheistä">\n<p><b>Tunnetko jonkun, jolle ovelle tulee kerääjiä?</b> Lähetä hänelle vinkki – se vie viisi sekuntia.</p>\n<button type="button" class="btn" id="varoita">📲 Varoita läheistä</button>\n</section>'
+VAROITAJS = '<script>(function(){var b=document.getElementById("varoita");if(!b)return;b.onclick=function(){\nvar t="Hei! Ovelle tulee nykyään myös huijarikerääjiä. Tällä voi tarkistaa ilmaiseksi, onko keräyksellä poliisin lupa ja mihin tilille lahjoitus kuuluu:",u="https://keraysvahti.fi/";\nif(navigator.share)navigator.share({text:t,url:u}).catch(function(){});else location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}})();</script>'
 ASENNUS = ('<div class="asenna-laatikko" id="asenna-l" hidden><button type="button" class="btn" id="asenna">Asenna sovellukseksi puhelimeen</button>'
            '<p class="small mute" id="asenna-ios" hidden>📱 Sovellukseksi iPhoneen: paina Safarin <b>Jaa</b>-painiketta ja valitse <b>Lisää Koti-valikkoon</b>.</p></div>')
 ASENNUSJS = ('<script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});'

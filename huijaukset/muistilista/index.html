@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/style.css?v=6ecf7fc2">
+<link rel="stylesheet" href="/style.css?v=d9126f02">
 
 </head>
 <body>
@@ -62,6 +62,10 @@
 </div>
 <p class="a4-ala">keraysvahti.fi/huijaukset</p>
 </div>
+<section class="varoita" aria-label="Varoita läheistä">
+<p><b>Tunnetko jonkun, jolle ovelle tulee kerääjiä?</b> Lähetä hänelle vinkki – se vie viisi sekuntia.</p>
+<button type="button" class="btn" id="varoita">📲 Varoita läheistä</button>
+</section>
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
@@ -73,5 +77,8 @@ var u=location.href,t='Muistilista huijauksia vastaan. Tulosta ja laita jääkaa
 if(navigator.share){navigator.share({title:document.title,text:t,url:u}).catch(function(){})}
 else{location.href='https://wa.me/?text='+encodeURIComponent(t+' '+u)}}})();</script>
 <script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
+<script>(function(){var b=document.getElementById("varoita");if(!b)return;b.onclick=function(){
+var t="Hei! Ovelle tulee nykyään myös huijarikerääjiä. Tällä voi tarkistaa ilmaiseksi, onko keräyksellä poliisin lupa ja mihin tilille lahjoitus kuuluu:",u="https://keraysvahti.fi/";
+if(navigator.share)navigator.share({text:t,url:u}).catch(function(){});else location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}})();</script>
 </body>
 </html>
