@@ -151,11 +151,12 @@ def rakenna(sivu, kirjoita, esc, ik):
 <input id="k-kunta" type="text" maxlength="60" autocomplete="off">
 <label class="lupa"><input type="checkbox" id="k-lupa"> <span><b>Saa käyttää nimettömänä</b> Keräysvahdin varoituksissa ja mainonnassa, esimerkiksi somejulkaisuissa. Mahdolliset tunnistettavat tiedot poistetaan ennen käyttöä.</span></label>
 <input type="text" id="k-hp" name="sivusto" tabindex="-1" autocomplete="off" class="sr" aria-hidden="true">
+<p class="yksityisyys"><b>Ennen kuin lähetät:</b> kertomus tallennetaan enintään 12 kuukaudeksi Cloudflaren palveluun ja välitetään ylläpitäjän sähköpostiin (Brevo). Nimeäsi, yhteystietojasi tai IP-osoitettasi ei tallenneta; roskapostin estämiseksi IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste. Kertomusta käytetään nimettömänä varoituksissa ja mainonnassa vain, jos annoit siihen luvan yllä. Voit pyytää poistoa kertomalla kertomuksen sisällön ja lähetysajan osoitteeseen <span class="mono">miika@eduskuntaseuranta.fi</span>. <a href="/tietoa/">Lisätietoja</a></p>
 <button type="submit" class="btn" id="k-laheta">Lähetä nimettömästi</button>
 <p id="k-tila" aria-live="polite"></p>
 </form>
 <aside class="note"><b>Menetitkö rahaa?</b> Tämä lomake ei korvaa rikosilmoitusta. Soita heti pankkiin ja tee rikosilmoitus poliisille: <a href="/huijaukset/apua/">ohjeet vaihe vaiheelta</a>.</aside>
-<p class="mute small">Tietosuoja: kertomus tallennetaan enintään 12 kuukaudeksi ja välitetään ylläpitäjän sähköpostiin. Lähettäjästä ei tallenneta tunnistetietoja; roskapostin estämiseksi IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste. Jos annoit luvan, kertomusta voidaan käyttää nimettömänä varoituksissa. Lisätietoja: <a href="/tietoa/">Tietoa ja tietosuoja</a>.</p>"""
+"""
     k("/huijaukset/kerro/", "Kerro huijausyrityksestä nimettömästi | Keräysvahti",
       "Yrittikö joku huijata sinua? Kerro nimettömästi, niin voimme varoittaa muita. Nimeä tai yhteystietoja ei tallenneta.", runko, skripti=KERROJS)
 
