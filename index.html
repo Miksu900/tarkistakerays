@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="/style.css?v=d9126f02">
+<link rel="stylesheet" href="/style.css?v=7810e9bd">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Keräysvahti", "url": "https://keraysvahti.fi/", "description": "Tarkista, onko rahankeräyksellä poliisin lupa."}</script>
 </head>
 <body>
@@ -95,14 +95,19 @@ function run(){var raw=q.value.trim(),f=fold(raw),ib=raw.toUpperCase().replace(/
  else hits=L.filter(function(o){return o._s.indexOf(f)>-1}).sort(function(a,b){return(b._n.indexOf(f)===0)-(a._n.indexOf(f)===0)||a[1].localeCompare(b[1],"fi")});
  if(!hits.length){cnt.textContent="";var n=el("div","status warn");n.appendChild(el("span","dot"));var d=el("div");d.appendChild(el("b","","Voimassa olevaa lupaa ei löytynyt"));
   d.appendChild(el("span","","Haulla ”"+raw+"” ei löytynyt Poliisihallituksen myöntämää rahankeräyslupaa. Tarkista kirjoitusasu. Kyse voi olla myös pienkeräyksestä, joita ei ole tällä listalla: pyydä järjestäjältä pienkeräysnumero. Jos tilinumero ei täsmää minkään luvan kanssa, älä lahjoita ennen kuin asia on selvä."));
-  n.appendChild(d);out.appendChild(n);return}
+  n.appendChild(d);out.appendChild(n);
+  var u="https://keraysvahti.fi/ei-loytynyt/?h="+encodeURIComponent(raw),s=el("section","jaa");
+  s.setAttribute("data-teksti","⚠️ Hain Keräysvahdista ”"+raw+"”, eikä poliisin rahankeräyslupaa löytynyt. Pyydä keräysnumero ennen kuin lahjoitat:");s.setAttribute("data-url",u);
+  var p=el("p");p.appendChild(el("b","","Varoita muita."));p.appendChild(document.createTextNode(" Lähetä tämä tulos esimerkiksi Facebook-ryhmään, jossa keräyksestä kysyttiin."));s.appendChild(p);
+  var r=el("div","jaa-napit"),b1=el("button","btn","📲 Jaa varoitus");b1.type="button";b1.setAttribute("data-jaa","");r.appendChild(b1);
+  var b2=el("button","btn toissij","Kopioi linkki");b2.type="button";b2.setAttribute("data-kopioi-linkki","");r.appendChild(b2);s.appendChild(r);out.appendChild(s);return}
  cnt.textContent=hits.length.toLocaleString("fi-FI")+(hits.length===1?" lupa löytyi.":" lupaa löytyi.");more()}
 var t;q.addEventListener("input",function(){clearTimeout(t);t=setTimeout(run,120)});
 document.querySelectorAll(".ex button").forEach(function(b){b.onclick=function(){q.value=b.getAttribute("data-q");run();q.focus()}});
 fetch("/haku.json").then(function(r){return r.json()}).then(function(d){L=d.l;L.forEach(function(o){o._s=fold(o[1]+" "+o[0]+" "+o[2]+" "+o[3]);o._n=fold(o[1])});
  var h=decodeURIComponent((location.hash||"").slice(1)).replace(/_/g," ");if(h)q.value=h;run()}).catch(function(){cnt.textContent="Lupatietojen lataus epäonnistui. Päivitä sivu."});
 })();
-</script>
+</script><script>document.addEventListener("click",function(e){var j=e.target.closest("[data-jaa],[data-kopioi-linkki]");if(!j)return;var s=j.closest(".jaa"),t=s.getAttribute("data-teksti"),u=s.getAttribute("data-url");if(j.hasAttribute("data-jaa")){if(navigator.share){navigator.share({text:t,url:u}).catch(function(){})}else{location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}return}function ok(){j.textContent="Linkki kopioitu";setTimeout(function(){j.textContent="Kopioi linkki"},1800)}if(navigator.clipboard){navigator.clipboard.writeText(u).then(ok,function(){prompt("Kopioi linkki:",u)})}else prompt("Kopioi linkki:",u)});</script>
 <script>(function(){if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(function(){});var L=document.getElementById("asenna-l");if(!L)return;if(window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;var A=document.getElementById("asenna"),I=document.getElementById("asenna-ios"),ip=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>
 <script>(function(){var b=document.getElementById("varoita");if(!b)return;b.onclick=function(){
 var t="Hei! Ovelle tulee nykyään myös huijarikerääjiä. Tällä voi tarkistaa ilmaiseksi, onko keräyksellä poliisin lupa ja mihin tilille lahjoitus kuuluu:",u="https://keraysvahti.fi/";

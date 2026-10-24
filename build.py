@@ -24,7 +24,9 @@ LISTA_PVM = D["paivays"]  # esim. "25.8.2026"
 L = D["luvat"]
 YHTEYS = "miika@eduskuntaseuranta.fi"
 BUILD_PVM = date.today().isoformat()
-import hashlib
+import hashlib, sys
+sys.path.insert(0, os.path.join(ROOT, "tyokalut"))
+import jakokuvat
 CSS_V = hashlib.md5(open(os.path.join(ROOT, "style.css"), "rb").read()).hexdigest()[:8]  # välimuistin ohitus
 
 esc = lambda s: html.escape(s or "", quote=True)
@@ -108,7 +110,7 @@ def ik(nimi, cls="ico"):
             f'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{P}</svg>')
 
 
-def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skripti="", noindex=False, lang="fi"):
+def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skripti="", noindex=False, lang="fi", og_kuva="/og.png"):
     canonical = h_canonical or f"{SITE}{polku}"
     ld = f'<script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False).replace("</", "<\\/")}</script>' if jsonld else ""
     robots = '<meta name="robots" content="noindex">' if noindex else ""
@@ -126,7 +128,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 <meta property="og:url" content="{esc(canonical)}">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="{ {"fi":"fi_FI","sv":"sv_FI","en":"en_GB"}[lang] }">
-<meta property="og:image" content="{SITE}/og.png">
+<meta property="og:image" content="{SITE}{og_kuva}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -177,6 +179,27 @@ ASENNUSJS = ('<script>(function(){if("serviceWorker" in navigator)navigator.serv
              'window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();ip=e;L.hidden=false;A.hidden=false});'
              'A.onclick=function(){if(!ip)return;ip.prompt();ip.userChoice.then(function(){L.hidden=true;ip=null})};'
              'if(/iphone|ipad|ipod/i.test(navigator.userAgent)){L.hidden=false;A.hidden=true;I.hidden=false}})();</script>')
+
+
+def jaa_osio(teksti, url, otsikko="Lähetä tämä tarkistus eteenpäin",
+             selite="Kun joku kysyy, onko keräys oikea, vastaa tällä linkillä. Esikatselussa näkyy suoraan, onko lupa voimassa."):
+    from urllib.parse import quote
+    t = quote(teksti + " " + url, safe="")
+    return (f'<section class="jaa" data-teksti="{esc(teksti)}" data-url="{esc(url)}" aria-label="Jaa tarkistus">'
+            f'<p><b>{esc(otsikko)}</b> {esc(selite)}</p><div class="jaa-napit">'
+            '<button type="button" class="btn" data-jaa>📲 Jaa</button>'
+            f'<a class="btn toissij" href="https://wa.me/?text={t}" target="_blank" rel="noopener">WhatsApp</a>'
+            f'<a class="btn toissij" href="https://www.facebook.com/sharer/sharer.php?u={quote(url, safe="")}" target="_blank" rel="noopener">Facebook</a>'
+            f'<a class="btn toissij" href="https://x.com/intent/post?text={t}" target="_blank" rel="noopener">X</a>'
+            '<button type="button" class="btn toissij" data-kopioi-linkki>Kopioi linkki</button></div></section>')
+
+
+JAAJS = ('<script>document.addEventListener("click",function(e){var j=e.target.closest("[data-jaa],[data-kopioi-linkki]");if(!j)return;'
+         'var s=j.closest(".jaa"),t=s.getAttribute("data-teksti"),u=s.getAttribute("data-url");'
+         'if(j.hasAttribute("data-jaa")){if(navigator.share){navigator.share({text:t,url:u}).catch(function(){})}'
+         'else{location.href="https://wa.me/?text="+encodeURIComponent(t+" "+u)}return}'
+         'function ok(){j.textContent="Linkki kopioitu";setTimeout(function(){j.textContent="Kopioi linkki"},1800)}'
+         'if(navigator.clipboard){navigator.clipboard.writeText(u).then(ok,function(){prompt("Kopioi linkki:",u)})}else prompt("Kopioi linkki:",u)});</script>')
 
 
 def kirjoita(polku, sisalto):
@@ -250,7 +273,13 @@ for o in L:
 </article>
 {muut}
 <p class="mute small">Onko tieto väärin tai vanhentunut? Ilmoita: <span class="mono">{YHTEYS}</span></p>"""
-    kirjoita(f"/j/{o['slug']}/", sivu(f"/j/{o['slug']}/", otsikko, kuvaus, runko, jsonld=jsonld, skripti=COPYJS))
+    jakoteksti = (f"✅ {nimi}: rahankeräyslupa on voimassa ({o['nro']})." +
+                  (f" Oikea keräystili: {iban_fmt(o['iban'])}." if o["iban"] else "") +
+                  " Tarkista itse ennen kuin lahjoitat:")
+    runko = runko.replace('<section class="purpose">', jaa_osio(jakoteksti, f"{SITE}/j/{o['slug']}/") + '\n<section class="purpose">', 1)
+    jakokuvat.lupa(o, os.path.join(ROOT, "j", o["slug"], "jako.png"), LISTA_PVM)
+    kirjoita(f"/j/{o['slug']}/", sivu(f"/j/{o['slug']}/", otsikko, kuvaus, runko, jsonld=jsonld, skripti=COPYJS + JAAJS,
+                                      og_kuva=f"/j/{o['slug']}/jako.png"))
 
 # ---- kuntasivut ----
 for kp, lst in kunnat.items():
@@ -324,7 +353,12 @@ function run(){var raw=q.value.trim(),f=fold(raw),ib=raw.toUpperCase().replace(/
  else hits=L.filter(function(o){return o._s.indexOf(f)>-1}).sort(function(a,b){return(b._n.indexOf(f)===0)-(a._n.indexOf(f)===0)||a[1].localeCompare(b[1],"fi")});
  if(!hits.length){cnt.textContent="";var n=el("div","status warn");n.appendChild(el("span","dot"));var d=el("div");d.appendChild(el("b","","Voimassa olevaa lupaa ei löytynyt"));
   d.appendChild(el("span","","Haulla ”"+raw+"” ei löytynyt Poliisihallituksen myöntämää rahankeräyslupaa. Tarkista kirjoitusasu. Kyse voi olla myös pienkeräyksestä, joita ei ole tällä listalla: pyydä järjestäjältä pienkeräysnumero. Jos tilinumero ei täsmää minkään luvan kanssa, älä lahjoita ennen kuin asia on selvä."));
-  n.appendChild(d);out.appendChild(n);return}
+  n.appendChild(d);out.appendChild(n);
+  var u="https://keraysvahti.fi/ei-loytynyt/?h="+encodeURIComponent(raw),s=el("section","jaa");
+  s.setAttribute("data-teksti","⚠️ Hain Keräysvahdista ”"+raw+"”, eikä poliisin rahankeräyslupaa löytynyt. Pyydä keräysnumero ennen kuin lahjoitat:");s.setAttribute("data-url",u);
+  var p=el("p");p.appendChild(el("b","","Varoita muita."));p.appendChild(document.createTextNode(" Lähetä tämä tulos esimerkiksi Facebook-ryhmään, jossa keräyksestä kysyttiin."));s.appendChild(p);
+  var r=el("div","jaa-napit"),b1=el("button","btn","📲 Jaa varoitus");b1.type="button";b1.setAttribute("data-jaa","");r.appendChild(b1);
+  var b2=el("button","btn toissij","Kopioi linkki");b2.type="button";b2.setAttribute("data-kopioi-linkki","");r.appendChild(b2);s.appendChild(r);out.appendChild(s);return}
  cnt.textContent=hits.length.toLocaleString("fi-FI")+(hits.length===1?" lupa löytyi.":" lupaa löytyi.");more()}
 var t;q.addEventListener("input",function(){clearTimeout(t);t=setTimeout(run,120)});
 document.querySelectorAll(".ex button").forEach(function(b){b.onclick=function(){q.value=b.getAttribute("data-q");run();q.focus()}});
@@ -337,7 +371,22 @@ jsonld = {"@context": "https://schema.org", "@type": "WebSite", "name": "Keräys
 HAKUJS = HAKUJS.replace("var OK=CHECK;", "var OK=" + json.dumps(ik("check")) + ";")
 kirjoita("/", sivu("/", "Keräysvahti – tarkista rahankeräys ennen kuin lahjoitat",
                    "Onko keräyksellä poliisin lupa? Hae kaikki voimassa olevat rahankeräysluvat järjestön nimellä, keräysnumerolla, Y-tunnuksella tai tilinumerolla.",
-                   runko, jsonld=jsonld, skripti=HAKUJS))
+                   runko, jsonld=jsonld, skripti=HAKUJS + JAAJS))
+
+# ---- jaettava "lupaa ei löytynyt" -tulos ----
+jakokuvat.ei_loytynyt(os.path.join(ROOT, "ei-loytynyt", "jako.png"))
+runko = f"""<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a></nav>
+<h1>Lupaa ei löytynyt</h1>
+<div class="status warn big"><span class="dot"></span><div><b id="el-otsikko">Tälle keräykselle ei löytynyt poliisin rahankeräyslupaa</b>
+<span>Haettu Poliisihallituksen listasta voimassa olevista rahankeräysluvista ({esc(LISTA_PVM)}). Kyse voi olla myös kirjoitusvirheestä tai pienkeräyksestä, joka ei ole tällä listalla. Pyydä järjestäjältä keräysnumero ennen kuin lahjoitat.</span></div></div>
+<p><a class="btn" id="el-hae" href="/">Tarkista itse →</a></p>
+{OHJEET}"""
+ELJS = """<script>(function(){var h=new URLSearchParams(location.search).get("h");if(!h)return;h=h.slice(0,120);
+document.getElementById("el-otsikko").textContent="Haulla ”"+h+"” ei löytynyt poliisin rahankeräyslupaa";
+document.getElementById("el-hae").href="/#"+encodeURIComponent(h).replace(/%20/g,"_")})();</script>"""
+kirjoita("/ei-loytynyt/", sivu("/ei-loytynyt/", "Rahankeräyslupaa ei löytynyt | Keräysvahti",
+                              "Tälle keräykselle ei löytynyt poliisin rahankeräyslupaa. Pyydä keräysnumero ja tarkista tili ennen kuin lahjoitat.",
+                              runko, skripti=ELJS, noindex=True, og_kuva="/ei-loytynyt/jako.png"))
 
 # ---- tietoa ----
 runko = f"""<nav class="crumbs" aria-label="Murupolku"><a href="/">Keräysvahti</a></nav>
