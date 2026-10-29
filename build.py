@@ -157,7 +157,7 @@ def sivu(polku, otsikko, kuvaus, runko, *, h_canonical=None, jsonld=None, skript
 </main>
 <footer class="ft"><div class="ft-in">
 <p><b>Keräysvahti</b> kokoaa Poliisihallituksen julkaiseman listan voimassa olevista rahankeräysluvista haettavaan muotoon. Palvelu ei ole viranomaisen palvelu.</p>
-<p>Lupatiedot: Poliisihallitus, lista {esc(LISTA_PVM)}. <a href="/tietoa/">Tietoa, käyttöehdot ja tietosuoja</a> · Palaute ja korjaukset: <span class="mono">{YHTEYS}</span></p>
+<p>Lupatiedot: Poliisihallitus, lista {esc(LISTA_PVM)}. <a href="/tietoa/">Tietoa ja käyttöehdot</a> · <a href="/tietosuoja/">Tietosuojaseloste</a> · Palaute ja korjaukset: <span class="mono">{YHTEYS}</span></p>
 <p class="mute">Keräysvahti on osa <a href="https://faktapiste.fi">Faktapistettä</a>. Muita palveluja: <a href="https://pykalavahti.fi">Pykälävahti</a> · <a href="https://eduskuntaseuranta.fi">Eduskuntaseuranta</a> · <a href="https://nytpuhutaan.fi">Nytpuhutaan</a></p>
 </div></footer>
 {skripti}
@@ -414,6 +414,21 @@ kirjoita("/tietoa/", sivu("/tietoa/", "Tietoa ja tietosuoja | Keräysvahti",
                           "Mistä Keräysvahdin tiedot ovat peräisin, kuka palvelua ylläpitää ja miten tietosuoja on hoidettu.", runko))
 
 
+# ---- tietosuojaseloste ----
+from tietosuoja import seloste
+_ts = seloste(palvelu="Keräysvahti (keraysvahti.fi)", rekisterinpitaja="Miika Koskela (yksityinen ylläpitäjä)", yhteys=YHTEYS,
+    tiedot=[("Haku", "haku tehdään kokonaan omassa selaimessasi. Hakusanoja ei lähetetä palvelimelle."),
+            ("Nimettömät huijauskertomukset", "lomakkeella lähetetty kertomus (tyyppi, teksti, paikkakunta ja lupa nimettömään käyttöön). Nimeä, yhteystietoja tai IP-osoitetta ei tallenneta; roskapostin estoon IP-osoitteesta lasketaan tunnin ajan säilyvä tunnistamaton tiiviste."),
+            ("Kävijätilastot", "Cloudflare Web Analytics laskee kävijämääriä ilman evästeitä eikä tunnista yksittäisiä kävijöitä."),
+            ("Tekniset lokitiedot", "palvelimet käsittelevät laitteesi IP-osoitteen ja selaimen tiedot sivuston toimittamiseksi ja tietoturvaa varten."),
+            ("Sähköpostit", "jos otat yhteyttä, käsittelemme viestisi ja yhteystietosi vastataksemme sinulle.")],
+    tarkoitus="Tietoja käsitellään huijauksista varoittamiseen (oikeutettu etu ja kertomuksen lähettäjän antama lupa nimettömään käyttöön), sivuston toimivuuteen ja tietoturvaan (oikeutettu etu) sekä yhteydenottoihin vastaamiseen.",
+    kasittelijat=[("GitHub, Inc. (GitHub Pages)", "sivuston julkaisu"), ("Cloudflare, Inc.", "verkko, kävijätilastot ja kertomusten tallennus"), ("Brevo", "kertomusten välitys ylläpitäjän sähköpostiin"), ("Telegram", "ilmoitus uudesta kertomuksesta ylläpitäjälle"), ("Google LLC (Google Fonts)", "kirjasintiedostot; laitteesi IP-osoite välittyy Googlelle")],
+    sailytys="Huijauskertomukset säilytetään enintään 12 kuukautta. Tekniset lokitiedot poistuvat palveluntarjoajien järjestelmistä lyhyen ajan kuluessa. Sähköpostit säilytetään niin kauan kuin asian hoitaminen vaatii.",
+    evasteet="Keräysvahti ei käytä evästeitä. Sovellukseksi asennettava versio tallentaa sivujen välimuistin laitteellesi, jotta palvelu toimii nopeasti.",
+    lisa="<h2>Julkaistavat lupatiedot</h2><p>Sivustolla julkaistaan vain järjestöjen (yhdistysten, säätiöiden ja seurakuntien) rahankeräyslupatiedot sellaisina kuin Poliisihallitus on ne julkaissut.</p>")
+kirjoita("/tietosuoja/", sivu("/tietosuoja/", "Tietosuojaseloste | Keräysvahti", "Keräysvahdin tietosuojaseloste.", _ts))
+
 # ---- huijaukset: ks. huijaukset.py ----
 import huijaukset
 HUIJ_URLS = huijaukset.rakenna(sivu, kirjoita, esc, ik)
@@ -423,7 +438,7 @@ kirjoita("/404.html", sivu("/404.html", "Sivua ei löytynyt | Keräysvahti", "Si
     '<h1>Sivua ei löytynyt</h1><p class="lead">Lupa on voinut poistua poliisin listalta, tai osoite on kirjoitettu väärin.</p><p><a class="btn" href="/">Hae keräystä →</a></p>', noindex=True))
 
 # ---- sitemap & robots ----
-urls = ["/", "/kunnat/", "/tietoa/"] + HUIJ_URLS + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
+urls = ["/", "/kunnat/", "/tietoa/", "/tietosuoja/"] + HUIJ_URLS + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 sm += [f"<url><loc>{SITE}{u}</loc><lastmod>{BUILD_PVM}</lastmod></url>" for u in urls]
 sm.append("</urlset>")
