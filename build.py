@@ -330,6 +330,7 @@ runko = f"""<section class="hero">
 <div class="list" id="tulos"></div>
 <noscript><p>Haku vaatii JavaScriptin. Voit selata lupia <a href="/kunnat/">paikkakunnittain</a>.</p></noscript>
 {OHJEET}
+<section><h2>Usein kysyttyä</h2><ul><li><a href="/onko-kerays-luvallinen/">Onko keräys luvallinen? Näin tarkistat</a></li><li><a href="/keraaja-ovella/">Kerääjä ovella – mitä tehdä?</a></li><li><a href="/pienkerays/">Mikä on pienkeräys ja miten sen tarkistaa?</a></li></ul></section>
 <section><h2>Selaa paikkakunnittain</h2><ul class="cities">{''.join(kaupunki(k, v) for k, v in top_kunnat)}</ul>
 <p><a href="/kunnat/">Kaikki paikkakunnat →</a></p></section>
 <section><h2>Uusimmat luvat</h2><div class="list">{''.join(kortti(o) for o in uusimmat[:8])}</div></section>""".replace(f"{len(L):,}", f"{len(L):,}".replace(",", "\u00a0"))
@@ -432,13 +433,16 @@ kirjoita("/tietosuoja/", sivu("/tietosuoja/", "Tietosuojaseloste | Keräysvahti"
 # ---- huijaukset: ks. huijaukset.py ----
 import huijaukset
 HUIJ_URLS = huijaukset.rakenna(sivu, kirjoita, esc, ik)
+import ohjeet
+OHJE_URLS = ohjeet.rakenna(sivu, kirjoita, esc)
+open(os.path.join(ROOT, "llms.txt"), "w").write(ohjeet.llms(SITE))
 
 # ---- 404 ----
 kirjoita("/404.html", sivu("/404.html", "Sivua ei löytynyt | Keräysvahti", "Sivua ei löytynyt.",
     '<h1>Sivua ei löytynyt</h1><p class="lead">Lupa on voinut poistua poliisin listalta, tai osoite on kirjoitettu väärin.</p><p><a class="btn" href="/">Hae keräystä →</a></p>', noindex=True))
 
 # ---- sitemap & robots ----
-urls = ["/", "/kunnat/", "/tietoa/", "/tietosuoja/"] + HUIJ_URLS + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
+urls = ["/", "/kunnat/", "/tietoa/", "/tietosuoja/"] + OHJE_URLS + HUIJ_URLS + [f"/kunta/{slug(k)}/" for k in kunnat] + [f"/j/{o['slug']}/" for o in L]
 sm = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
 sm += [f"<url><loc>{SITE}{u}</loc><lastmod>{BUILD_PVM}</lastmod></url>" for u in urls]
 sm.append("</urlset>")

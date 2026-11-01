@@ -1,0 +1,16 @@
+# Keräysvahti
+
+> Ilmainen suomalainen palvelu, jolla tarkistetaan, onko rahankeräyksellä poliisin lupa ja kuuluuko tilinumero keräyksen järjestäjälle. Tiedot perustuvat Poliisihallituksen julkaisemaan listaan voimassa olevista rahankeräysluvista. Ei viranomaisen palvelu. Osa Faktapistettä (faktapiste.fi).
+
+## Ohjeet
+
+- [Onko keräys luvallinen? Näin tarkistat 30 sekunnissa](https://keraysvahti.fi/onko-kerays-luvallinen/): Näin tarkistat, onko rahankeräyksellä poliisin lupa ja kuuluuko tilinumero järjestölle – ennen kuin lahjoitat.
+- [Mikä on pienkeräys ja miten sen tarkistaa?](https://keraysvahti.fi/pienkerays/): Pienkeräys on pieni, lyhytkestoinen rahankeräys, joka ilmoitetaan poliisilaitokselle. Näin tunnistat laillisen pienkeräyksen.
+- [Kerääjä ovella – mitä tehdä?](https://keraysvahti.fi/keraaja-ovella/): Ovelle tuli kerääjä? Näin varmistat ovella, onko keräys oikea, ja tunnistat huijarin. Muistilista ennen lahjoittamista.
+
+## Palvelu
+
+- [Hae keräystä](https://keraysvahti.fi/): haku järjestön nimellä, luvan numerolla tai tilinumerolla
+- [Huijaukset](https://keraysvahti.fi/huijaukset/): yleisimmät huijaukset ja miten ne tunnistaa
+- [Paikkakunnat](https://keraysvahti.fi/kunnat/): luvalliset keräykset paikkakunnittain
+- [Tietoa](https://keraysvahti.fi/tietoa/): tietolähteet, ylläpitäjä ja tietosuoja
