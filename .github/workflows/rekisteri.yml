@@ -16,7 +16,18 @@ jobs:
       - name: Lataa ja lue
         run: |
           set -e
-          curl -sSfL -A "Mozilla/5.0 (keraysvahti.fi)" -o lista.pdf "https://poliisi.fi/documents/25235045/123492012/Lista-rahankerayksista-FI.pdf"
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130 Safari/537.36"
+          U=""
+          for S in https://poliisi.fi/rahankeraykset https://poliisi.fi/rahankerayslupa https://poliisi.fi/rahankerays https://poliisi.fi/luvat-ja-ilmoitukset https://poliisi.fi/arpajaishallinto https://poliisi.fi/rahankeraysten-jarjestaminen; do
+            C=$(curl -sSL -A "$UA" -o s.html -w '%{http_code}' "$S" || true)
+            L=$(grep -oiE 'href="[^"]*(rahankeray|keraysluv|Lista-rahan)[^"]*"' s.html | sed 's/href="//;s/"$//' | sort -u | head -8 | tr '\n' ' ')
+            echo "::notice title=$S ($C)::$L"
+            P=$(grep -oiE 'href="[^"]*Lista-rahankerayksista-FI[^"]*"' s.html | head -1 | sed 's/href="//;s/"$//')
+            if [ -n "$P" ] && [ -z "$U" ]; then case "$P" in http*) U="$P";; *) U="https://poliisi.fi$P";; esac; fi
+          done
+          [ -n "$U" ] || U="https://poliisi.fi/documents/25235045/123492012/Lista-rahankerayksista-FI.pdf"
+          echo "::notice title=PDF::$U"
+          curl -sSfL -A "$UA" -o lista.pdf "$U"
           ls -la lista.pdf
           python3 tyokalut/paivita-lista.py
           rm -f lista.pdf
