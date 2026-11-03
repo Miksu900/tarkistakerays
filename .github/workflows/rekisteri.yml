@@ -1,0 +1,42 @@
+name: Lupalista (Poliisihallitus)
+# Lataa Poliisihallituksen rahankeräyslupien listan, päivittää data/luvat.json ja rakentaa sivuston.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 4 * * 1"   # maanantaisin
+permissions:
+  contents: write
+concurrency: { group: varoitukset, cancel-in-progress: false }
+jobs:
+  paivita:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -q pdfplumber
+      - name: Lataa ja lue
+        run: |
+          set -e
+          curl -sSfL -A "Mozilla/5.0 (keraysvahti.fi)" -o lista.pdf "https://poliisi.fi/documents/25235045/123492012/Lista-rahankerayksista-FI.pdf"
+          ls -la lista.pdf
+          P=$(python3 -c "
+          import pdfplumber,re
+          t=pdfplumber.open('lista.pdf').pages[0].extract_text() or ''
+          m=re.findall(r'\b(\d{1,2})\.(\d{1,2})\.(20\d\d)\b',t)
+          print('.'.join(str(int(x)) for x in m[0][:2])+'.'+m[0][2] if m else '')
+          ")
+          [ -n "$P" ] || P=$(date +%-d.%-m.%Y)
+          echo "::notice title=Listan päiväys::$P"
+          PAIVAYS="$P" python3 tyokalut/lue-pdf.py
+          python3 - <<'PY'
+          import json
+          u=json.load(open('luvat.json')); v=json.load(open('data/luvat.json'))
+          n,o=len(u['luvat']),len(v['luvat'])
+          print(f"::notice title=Luvat::uusi {n}, vanha {o}, päiväys {v['paivays']} -> {u['paivays']}")
+          if n < 0.8*o: raise SystemExit(f"::error::Liian vähän lupia ({n} < 80 % / {o}), ei päivitetä")
+          PY
+          mv luvat.json data/luvat.json; rm -f lista.pdf
+          python3 build.py
+      - name: Tallenna
+        run: |
+          git config user.name "keraysvahti"; git config user.email "keraysvahti@users.noreply.github.com"
+          git add -A && (git commit -qm "Lupalista päivitetty Poliisihallituksen listasta" && git pull --rebase -q && git push) || echo "ei muutoksia"

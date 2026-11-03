@@ -1,4 +1,4 @@
-import pdfplumber, re, json
+import pdfplumber, re, json, os
 from collections import Counter
 COLS = ["Keräysnumero", "Voimassa", "Julkaisu", "Viran-", "Pankkiyhteys", "Y-tunnus", "Yhteisö", "Kotipaikka"]
 KEY = ["nro", "voimassa", "kayttotarkoitus", "viranomainen", "pankki", "ytunnus", "yhteiso", "kotipaikka"]
@@ -73,4 +73,4 @@ for o in out[:3] + [x for x in out if x["nro"] in ("RA/2020/585", "RA/2020/469",
     print(o["nro"], "|", o["yhteiso"], "|", o["kotipaikka"], "|", o["ytunnus"], "|", o["iban"], "|", o["kayttotarkoitus"][:70])
 bad = [o for o in out if not re.fullmatch(r"\d{7}-\d", o["ytunnus"])][:5]
 for o in bad: print("HUONO", o["nro"], o["ytunnus"], o["yhteiso"])
-json.dump({"paivays": "25.8.2026", "luvat": out}, open("luvat.json", "w"), ensure_ascii=False)
+json.dump({"paivays": os.environ.get("PAIVAYS") or "25.8.2026", "luvat": out}, open("luvat.json", "w"), ensure_ascii=False)
